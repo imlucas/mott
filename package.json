@@ -1,0 +1,22 @@
+{
+  "author": "Lucas Hrabovsky <lucas@ex.fm>",
+  "name": "mott",
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "http://github.com/exfm/mott",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/exfm/mott.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "1.8.1"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
