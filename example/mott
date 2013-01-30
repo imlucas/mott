@@ -22,7 +22,8 @@ mott.config
         'VERSION': '3.0.0',
         'VERSION_CODE': 3000,
         'PLATFORMS': [
-            'web'
+            'web',
+            'ipone'
         ],
         'ASSETS': __dirname + '/assets',
         'WATCH_PATH': __dirname,
