@@ -1,12 +1,12 @@
 "use strict";
 
 var nconf = require('nconf'),
-    tunnel = require('./tunnel'),
-    watch = require('./watch'),
-    build = require('./build'),
-    server = require('./server'),
-    crunch = require('./image-crunch'),
-    deploy = require('./deploy');
+    tunnel = require('../lib/tunnel'),
+    watch = require('../lib//watch'),
+    build = require('../lib//build'),
+    server = require('../lib//server'),
+    crunch = require('../lib//image-crunch'),
+    deploy = require('../lib//deploy');
 
 module.exports = function(grunt){
     grunt.registerTask('tunnel', 'Start a localtunnel', function(){
