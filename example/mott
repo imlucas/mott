@@ -22,8 +22,7 @@ mott.config
         'VERSION': '3.0.0',
         'VERSION_CODE': 3000,
         'PLATFORMS': [
-            'web',
-            'iphone'
+            'web'
         ],
         'ASSETS': __dirname + '/assets',
         'WATCH_PATH': __dirname,
@@ -54,7 +53,7 @@ mott.on('connected', function(){
     var task = process.argv.shift(),
         args = process.argv;
 
-    if(!task){
+    if(!task || !mott.tasks[task]){
         console.log('Usage: ./mott [task] [args]');
         console.log('Tasks:');
         Object.keys(mott.tasks).forEach(function(name){
@@ -62,6 +61,8 @@ mott.on('connected', function(){
         });
         process.exit(1);
     }
+    console.log('Executing ' + task + '...');
+    mott.tasks[task].target.apply(this, args);
 });
 
 mott.connect();
