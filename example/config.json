@@ -1,0 +1,6 @@
+{
+    "SOCKETIO": false,
+    "WEINRE": "my-weinre-tag",
+    "API_URL": "http://ex.fm",
+    "NODE_ENV": "development"
+}
