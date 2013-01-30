@@ -11,7 +11,11 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "nconf": "0.6.7",
+    "plog": "0.0.4",
+    "plata": "0.0.26"
+  },
   "devDependencies": {
     "mocha": "1.8.1"
   },
