@@ -4,7 +4,7 @@ var express = require('express'),
     socketio = require('socket.io'),
     nconf = require('nconf');
 
-var app = module.exports = express.createServer(),
+var app = module.exports = express(),
     io = socketio.listen(7002);
 
 io.configure(function(){
