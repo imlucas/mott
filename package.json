@@ -32,7 +32,9 @@
     "which": "1.0.5",
     "watch": "0.5.1",
     "glob": "3.1.21",
-    "handlebars-runtime": "1.0.0"
+    "handlebars-runtime": "1.0.0",
+    "handlebars": "1.0.10",
+    "through": "2.2.7"
   },
   "devDependencies": {
     "mocha": "1.8.1"
