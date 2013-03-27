@@ -3,6 +3,7 @@
 var nconf = require('nconf'),
     plog = require('plog'),
     aws = require('plata'),
+    common = require('./lib/common'),
     EventEmitter = require('events').EventEmitter;
 
 
@@ -31,3 +32,4 @@ module.exports.connect = function(cb){
 };
 
 module.exports.config = nconf;
+module.exports.common = common;

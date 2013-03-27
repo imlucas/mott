@@ -52,8 +52,14 @@ mott.on('connected', function(){
     process.argv.shift();
 
     var task = process.argv.shift(),
-        args = process.argv;
+        args = process.argv,
+        p;
 
+    if(task && task.indexOf(':') > -1){
+        p = task.split(':');
+        task = p.shift();
+        args.push.apply(args, p[0].replace(' ', '').split(','));
+    }
     if(!task || !mott.tasks[task]){
         console.log('Usage: ./mott [task] [args]');
         console.log('Tasks:');
@@ -64,6 +70,8 @@ mott.on('connected', function(){
     }
     console.log('Executing ' + task + '...');
     mott.tasks[task].target.apply(this, args);
+
+    // ./mott run:web
 });
 
 mott.connect();
