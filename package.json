@@ -15,7 +15,7 @@
     "localtunnel": "git://github.com/exfm/localtunnel.git",
     "nconf": "0.6.7",
     "plog": "0.0.4",
-    "plata": "0.0.26",
+    "plata": "0.0.32",
     "when": "1.7.1",
     "browserify": "2.8.0",
     "templatify": "0.0.2",
