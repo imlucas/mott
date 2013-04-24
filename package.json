@@ -9,7 +9,7 @@
     "url": "git://github.com/exfm/mott.git"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "localtunnel": "git://github.com/exfm/localtunnel.git",

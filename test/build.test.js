@@ -12,30 +12,30 @@ config.set('BASE_URL', 'localhost:8080');
 
 describe("Build", function(){
     describe("Handlebars", function(){
-        it("should add helpers", function(done){
+        it("should add helpers", function(){
             var helpers = build.findHelpers('web');
-            // assert.deepEqual(helpers, [['t', '/common/js/helpers/t.js']]);
-            done();
+            assert(helpers[0][1].indexOf('/common/js/helpers/t.js') > -1,
+                'Should find translation helper in common');
         });
 
-        it("should add partials", function(done){
+        it("should add partials", function(){
             var partials = build.findPartials('web');
-            // assert.deepEqual(partials, [['item', '/common/templates/partials/item.html' ]]);
-            done();
+            assert(partials[0][1].indexOf('/common/templates/partials/item.html') > -1,
+                'Should find item partial in common');
         });
 
-        it("should find handlebars environment", function(done){
+        it("should find handlebars environment", function(){
             var env = build.getHandlebarsEnvironment('web');
-            // assert.equal(env, "var Handlebars = require('handlebars-runtime');\n"+
-            //     "Handlebars.registerPartial('item', require('/common/templates/partials/item.html'));\n"+
-            //     "Handlebars.registerHelper('t', require('/common/js/helpers/t.js'));");
-            done();
+            assert(env.indexOf("Handlebars.registerPartial('item'") > -1,
+                "Should register item partial");
+            assert(env.indexOf("Handlebars.registerHelper('t'") > -1,
+                "Should register translation helper");
         });
     });
 
     describe("JS", function(){
         it("should do it", function(done){
-            build.js().then(function(){
+            build.js(config.get('PLATFORMS')).then(function(){
                 done();
             });
         });
