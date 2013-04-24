@@ -1,3 +1,11 @@
 .DS_Store
 node_modules
 npm-debug.log
+
+example/assets/web/app.manifest
+example/assets/web/app.css
+example/assets/web/app.js
+example/assets/web/bootstrap.js
+example/assets/web/handlebars-environment.js
+example/assets/web/templates.js
+example/assets/web/js/config.js
