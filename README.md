@@ -6,6 +6,8 @@ This is still a very early release as we're still doing some housekeeping but ha
 look at the [example](https://github.com/exfm/mott/tree/master/example) for usage.
 
 
+In the mean time, more info is available on the [Phonegap Blog](http://phonegap.com/blog/2013/04/23/story-behind-exfm/)
+
 ## Install
 
      npm install mott
