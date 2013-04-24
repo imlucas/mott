@@ -1,8 +1,8 @@
 {
   "author": "Lucas Hrabovsky <lucas@ex.fm>",
   "name": "mott",
-  "description": "",
-  "version": "0.0.1",
+  "description": "A build tool for writing awesome multiplatform apps in Javascript and HTML",
+  "version": "0.0.2",
   "homepage": "http://github.com/exfm/mott",
   "repository": {
     "type": "git",

@@ -1,5 +1,7 @@
 # mott
 
+A build tool for writing awesome multiplatform apps in Javascript and HTML.
+
 [![Build Status](https://secure.travis-ci.org/exfm/mott.png)](http://travis-ci.org/exfm/mott)
 
 This is still a very early release as we're still doing some housekeeping but have a
