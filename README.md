@@ -37,3 +37,25 @@ In the mean time, more info is available on the [Phonegap Blog](http://phonegap.
     npm install mott
     <add mott file>
     ./mott
+
+## Running the example app
+
+install dependencies
+
+    cd example
+    npm install
+
+display list of commands
+
+    ./mott
+
+run the app
+
+    ./mott run:web
+
+open browser and go to http://localhost:3000
+
+## Optional dependencies
+
+* To use `./mott crunch` you'll need to install pngcrush and optipng
+* To use `./mott smoke` you'll need to install phantomjs
