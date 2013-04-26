@@ -23,7 +23,8 @@ In the mean time, more info is available on the [Phonegap Blog](http://phonegap.
  * Rebuild/reload on change
 
 
- ## Examples
+## Examples
+
  * exfm [web](http://assets.extension.fm) [ios](https://itunes.apple.com/us/app/exfm/id440394777?mt=8)
 
 ## Install
