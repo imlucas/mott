@@ -8,6 +8,57 @@ var util = require('util'),
     uglify = require('uglify-js'),
     writeFile = Q.denodeify(fs.writeFile);
 
+
+// So things are sort of working now, but there is way too much cooked into the libs.
+// It's so constrained that it makes a lot of functionality extremely brittle
+// and not all the useful.  This needs to be corrected, along with better supporting
+// a lot of cases we cludged our way around for the past few months.
+// So here's some notes on ways to clean this up.
+//
+// ## 1. Cookbook
+// * Defines the application configration
+// * `Recipes` to configure each app (formerly platform)
+// * `Environments` which override configuration keys
+// * Generators handle recipes to prodive the final application.
+// ## 2. Environment
+//  * Pretty simple as per above.  Cases:
+//  * You want to deploy to different S3 buckets for beta and prod
+//  * Only gzip and crunch in production
+// ## 3. Recipes
+// * I don't like this "opinionated" configuration mott currently relies on.
+// * You should be able to use something other than handlebars for front end templates.
+// * Keeping all the configuration in static objects is going to be a nightmare for changing things and adding new features
+// ## 4. Generators
+// * There are lots of other things you want to do ie build static pages, MD->HTML
+// * Splitting into generators cleans up a lot of code.
+
+
+// 1. Cookbook wraps up config data, recipes and environments.
+function Cookbook(data){
+    this.config = data.config;
+    this.environments = data.environments;
+    this.appRecipes = data.apps;
+}
+
+// Run cli
+Cookbook.prototype.cli = function(){};
+
+// 2. Environment: should their be an environment object?
+
+// 3. Recipes hold oonfiguration
+function Recipe(tpl, ctx){
+    this.tpl = tpl;
+    this.ctx = ctx;
+    this.config = {};
+}
+// Recipe can spit out templated object.
+Recipe.prototype.getData = function(){
+    return JSON.parse(JSON.stringify(this.tpl).replace(/{{app}}/g, this.ctx.app));
+};
+
+
+// 4. Generators
+// Budle a browserify bundle.
 function JSGenerator(src, dest){
     this.src = src;
 
@@ -25,7 +76,6 @@ function JSGenerator(src, dest){
         this.dest = dest;
     }
 }
-
 JSGenerator.prototype.run = function(){
     var d = Q.defer(),
         self = this,
@@ -35,9 +85,6 @@ JSGenerator.prototype.run = function(){
     bundle = browserify(entryPoints);
 
     bundle.bundle({debug: (nconf.get('NODE_ENV') === 'development')}, function(err, buffer){
-        if(nconf.get('MINIFY')){
-            buffer = uglify(buffer);
-        }
         writeFile(self.dest, buffer).then(function(){
             d.resolve(self);
         });
@@ -45,48 +92,85 @@ JSGenerator.prototype.run = function(){
     return d.promise;
 };
 
-function Recipe(tpl, ctx){
-    this.tpl = tpl;
-    this.ctx = ctx;
-}
-Recipe.prototype.getJSON = function(){
-    return JSON.parse(JSON.stringify(this.tpl).replace(/{{app}}/g, this.ctx.app));
-};
+// Compile Less
+function LessGenerator(){}
+LessGenerator.prototype.transform = function(buffer, cb){};
+LessGenerator.prototype.run = function(){};
 
-var tpl = {
-    "js": {
-        "{{app}}/js/main.js": {
-            "dest": "{{app}}/app.js",
-            "templating": {
-                "engine": "handlebars",
-                "helpers": [
-                    "common/js/helpers/*.js",
-                    "{{app}}/js/helpers/*.js"
-                ],
-                "partials": [
-                    "common/js/partials/*.html",
-                    "{{app}}/js/partials/*.html"
-                ]
-            }
+// Markdown -> HTML
+// Render some jade templates to HTML.
+function PageGenerator(){}
+PageGenerator.prototype.transform = function(buffer, cb){};
+PageGenerator.prototype.run = function(){};
+
+
+
+
+
+// Custom recipe.
+// Should this also hold some package.json info?
+function MyRecipe(ctx){
+    var tpl = {
+        "js": {
+            "{{app}}/js/main.js": {
+                "dest": "{{app}}/app.js",
+                "templating": {
+                    "engine": "handlebars",
+                    "helpers": [
+                        "common/js/helpers/*.js",
+                        "{{app}}/js/helpers/*.js"
+                    ],
+                    "partials": [
+                        "common/js/partials/*.html",
+                        "{{app}}/js/partials/*.html"
+                    ]
+                }
+            },
+            "{{app}}/js/bootstrap-loader.js": "{{app}}/bootstrap-loader.js"
         },
-        "{{app}}/js/bootstrap-loader.js": "{{app}}/bootstrap-loader.js"
-    },
-    "less": {
-        "{{app}}/less/main.less": "{{app}}/app.css"
-    },
-    "pages": {
-        "{{app}}/index.html": "/index.html",
-        "{{app}}/pages/(.*).html": "/page/$1"
-    },
-    "assets": [
-        "common/*"
-    ]
+        "less": {
+            "{{app}}/less/main.less": "{{app}}/app.css"
+        },
+        "pages": {
+            "{{app}}/index.html": "/index.html",
+            "{{app}}/pages/(.*).html": "/page/$1"
+        },
+        "assets": [
+            "common/*"
+        ]
+    };
+    this.super_(tpl, ctx);
+}
+util.inherits(MyRecipe, Recipe);
+
+// This is currently hardcoded in lib/build.  Recipes allow it to be moved out.
+MyRecipe.prototype.transform = function(what, buffer, cb){
+    if(what === 'css'){
+        var regex = /url\(\/"?([\w\d\/\-\.\?\#\@]+)"?\)/g,
+            replacement = (this.ctx.app === 'web' || this.ctx.app  === 'chromeapp') ?
+                "url(/$1)" :  "url($1)";
+        cb(null, buffer.replace(regex, replacement));
+    }
 };
 
-var webRecipe = new Recipe(tpl, {'app': 'web'}),
-    iphoneRecipe = new Recipe(tpl, {'app': 'iphone'});
+// Build configuration for a web app and an iphone app.
+// Probably want a phonegap recipe?
+var webRecipe = new MyRecipe({'app': 'web'}),
+    iphoneRecipe = new MyRecipe({'app': 'iphone'});
 
-var config = {
+// Above recipes specify a transform on their prototype.  Better as middleware style?
+[webRecipe, iphoneRecipe].map(function(recipe){
+    recipe.use(function(){
+        return {
+            transform: function(what, buffer, cb){
+
+            }
+        };
+    });
+});
+
+// Make the cookbook
+var cookbook = new Cookbook({
     "apps": {"web": webRecipe, "iphone": iphoneRecipe},
     "config": {
         "deploy": "s3://assets.extension.fm",
@@ -104,20 +188,9 @@ var config = {
             "socketio": true
         }
     }
-};
+});
 
-console.log(util.inspect(config, false, 10, true));
+// Run a cli for this cookbook
+cookbook.cli();
 
-// function PageGenerator(src, dest){
-//     this.src = src;
-//     this.dest = dest;
-//     this.inputFormat = 'md';
-//     this.outputFormat = 'html';
-// }
-
-// PageGenerator.prototype.transform = function(){
-//     var d = Q.defer();
-//     return Q.promise;
-// };
-
-// PageGenerator.prototype.run = function(){};
+console.log(util.inspect(cookbook, false, 10, true));
