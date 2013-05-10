@@ -9,6 +9,31 @@ var util = require('util'),
     writeFile = Q.denodeify(fs.writeFile);
 
 
+function Task(opts){}
+
+function PageTask(opts){}
+
+function JSTask(opts){}
+
+function LessTask(opts){}
+
+
+function DeployTask(opts){
+    if(opts.uri.indexOf('s3://')){
+        this.child = new DeployS3Task(opts);
+    }
+}
+util.inherits(DeployTask, Task);
+
+DeployTask.prototype.run = function(){
+    return this.child.run();
+};
+
+function DeployS3Task(){}
+
+function DeployGithubPagesTask(){}
+
+
 // So things are sort of working now, but there is way too much cooked into the libs.
 // It's so constrained that it makes a lot of functionality extremely brittle
 // and not all the useful.  This needs to be corrected, along with better supporting
@@ -51,6 +76,7 @@ function Recipe(tpl, ctx){
     this.ctx = ctx;
     this.config = {};
 }
+
 // Recipe can spit out templated object.
 Recipe.prototype.getData = function(){
     return JSON.parse(JSON.stringify(this.tpl).replace(/{{app}}/g, this.ctx.app));
@@ -111,16 +137,16 @@ PageGenerator.prototype.run = function(){};
 // Should this also hold some package.json info?
 function MyRecipe(ctx){
     var tpl = {
-        "js": {
+        js: {
             "{{app}}/js/main.js": {
                 "dest": "{{app}}/app.js",
                 "templating": {
-                    "engine": "handlebars",
-                    "helpers": [
+                    engine: "handlebars",
+                    helpers: [
                         "common/js/helpers/*.js",
                         "{{app}}/js/helpers/*.js"
                     ],
-                    "partials": [
+                    partials: [
                         "common/js/partials/*.html",
                         "{{app}}/js/partials/*.html"
                     ]
@@ -128,20 +154,45 @@ function MyRecipe(ctx){
             },
             "{{app}}/js/bootstrap-loader.js": "{{app}}/bootstrap-loader.js"
         },
-        "less": {
+        less: {
             "{{app}}/less/main.less": "{{app}}/app.css"
         },
-        "pages": {
+        pages: {
             "{{app}}/index.html": "/index.html",
             "{{app}}/pages/(.*).html": "/page/$1"
         },
-        "assets": [
+        include: [
             "common/*"
         ]
     };
     this.super_(tpl, ctx);
 }
 util.inherits(MyRecipe, Recipe);
+
+function CordovaRecipe(){
+    this.cordova = {
+        build: function(){}
+    };
+}
+util.inherits(CordovaRecipe, Recipe);
+
+function IPhoneRecipe(){
+
+}
+util.inherits(IPhoneRecipe, CordovaRecipe);
+
+IPhoneRecipe.prototype.build = function(){
+    var self = this;
+
+    return self.super.build().then(function(){
+        return self.copyTo('./native/iphone');
+    }).then(function(){
+        return self.cordova.build('./native/iphone');
+    });
+};
+
+
+
 
 // This is currently hardcoded in lib/build.  Recipes allow it to be moved out.
 MyRecipe.prototype.transform = function(what, buffer, cb){
@@ -152,6 +203,9 @@ MyRecipe.prototype.transform = function(what, buffer, cb){
         cb(null, buffer.replace(regex, replacement));
     }
 };
+
+
+function ExfmRecipe(){}
 
 // Build configuration for a web app and an iphone app.
 // Probably want a phonegap recipe?
@@ -192,5 +246,11 @@ var cookbook = new Cookbook({
 
 // Run a cli for this cookbook
 cookbook.cli();
+
+cookbook.smokeTest();
+
+cookbook.test();
+
+cookbook.deploy({environment: 'prod'});
 
 console.log(util.inspect(cookbook, false, 10, true));
