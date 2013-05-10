@@ -119,6 +119,13 @@ Cookbook.prototype.exec = function(appNames, stepName, done){
     .done();
 };
 
+// Allow skipping a step, ie when watching changes and rebuilding,
+// dont do the costly recopy/stat of allow the includes, rebuild all the
+// pages, etc.
+Cookbook.prototype.skip = function(step, name){
+
+};
+
 var recipe = new Recipe()
 .use('build', 'just a test', function(ctx, done){
         log.debug('inline build step', ctx);
