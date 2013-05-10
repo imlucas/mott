@@ -10,6 +10,8 @@ var log = {
     'error': console.error
 };
 
+// @todo (lucas) Could context hold open resources that can be flushed to
+// disk after a step is completed?
 function Context(){}
 Context.prototype.extend = function(o){
     for(var key in o){
