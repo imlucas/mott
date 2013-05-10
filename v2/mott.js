@@ -1,7 +1,9 @@
 "use strict";
 var Q = require('q'),
     fs = require('fs'),
-    md = require( "markdown" ).markdown;
+    md = require( "markdown" ).markdown,
+    readFile = Q.denodeify(fs.readFile),
+    writeFile = Q.denodeify(fs.writeFile);
 
 var log = {
     'debug': console.log,
@@ -13,21 +15,30 @@ Context.prototype.extend = function(o){
     for(var key in o){
         this[key] = o[key];
     }
-
     return this;
 };
 
 function Recipe(){
     this.steps = {};
+    this.nameToStep = {};
+
     this.ctx = new Context();
 }
 
-Recipe.prototype.use = function(step, func){
+// @todo (lucas) Keep a mapping so we can fire callbacks when particular
+// steps are called to do other things, ie transform.
+Recipe.prototype.use = function(step, name, func){
     log.debug('add `' + step + '` step: ', func);
     if(!this.steps[step]){
         this.steps[step] = [];
     }
+
     this.steps[step].push(func);
+    return this;
+};
+
+// Register a transform callback.
+Recipe.prototype.transform = function(name, cb){
     return this;
 };
 
@@ -80,6 +91,7 @@ Cookbook.prototype.runStepOnApp = function(app, stepName){
 Cookbook.prototype.exec = function(appNames, stepName, done){
     var self = this,
         names = [];
+    // @todo (lucas) Decorate context more based on selected environment, rebuild config, etc.
 
     log.debug('exec step `'+stepName+'`');
     Q.all(Object.keys(this.apps).filter(function(name){
@@ -93,31 +105,49 @@ Cookbook.prototype.exec = function(appNames, stepName, done){
 };
 
 var recipe = new Recipe()
-    .use('build', function(ctx, done){
-            log.debug('inline build step', ctx);
-            done();
-        }
-    )
-    .use('build', function(ctx, done){
-        if(!ctx.pages){
-            log.debug('no pages');
-            return done();
-        }
+.use('build', 'just a test', function(ctx, done){
+        log.debug('inline build step', ctx);
+        done();
+    }
+)
+.use('build', 'build less', function(ctx, done){
+    if(!ctx.less){
+        return done();
+    }
 
-        function convertMarkdown(){
+    var less = require('less'),
+        path = require('path'),
+        opts = {
+            'compress': false,
+            'yuicompress': false,
+            'optimization': 1,
+            'strictImports': false
+        };
+
+    Q.all(Object.keys(ctx.less).map(function(src){
+        return readFile(src, 'utf-8').then(function(buf){
             var d = Q.defer();
-            // @todo (lucas) Better to just do in jade? with :markdown
-            // @todo (lucas) yamlFm   = require( 'front-matter' )
-            d.resovle('I am some html.');
+            new less.Parser({
+                'paths': [path.dirname(src)],
+                'optimizations': opts.optimizations,
+                'filename': src,
+                'strictImports': opts.strictImports
+            }).parse(buf, function(err, tree){
+                if(err){
+                    return d.reject(err);
+                }
+                d.resolve({'data': tree.toCSS({
+                    'compress': opts.compress,
+                    'yuicompress': opts.yuicompress
+                }), 'path': src});
+            });
             return d.promise;
-        }
-        Q.all(Object.keys(ctx.pages).map(function(page){
-            if(page.indexOf('.md') > -1){
-                return convertMarkdown(page);
-            }
-        })).then(function(){done();}, function(err){done(err);})
-        .done();
-    });
+        });
+    })).then(function(){
+        done();
+    }).done();
+});
+
 
 new Cookbook({
     'apps': {'web': recipe.context({
