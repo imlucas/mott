@@ -128,7 +128,7 @@ new Cookbook({
             'less/main.less': 'app.css'
         },
         'pages': {
-            'index.html': 'index.html'
+            'index.jade': 'index.html'
         }
     })},
     'config': {
