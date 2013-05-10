@@ -126,6 +126,7 @@ var recipe = new Recipe()
 
     Q.all(Object.keys(ctx.less).map(function(src){
         return readFile(src, 'utf-8').then(function(buf){
+            // @todo (lucas) Replace with Q.fncall?
             var d = Q.defer();
             new less.Parser({
                 'paths': [path.dirname(src)],
@@ -136,19 +137,38 @@ var recipe = new Recipe()
                 if(err){
                     return d.reject(err);
                 }
-                d.resolve({'data': tree.toCSS({
-                    'compress': opts.compress,
-                    'yuicompress': opts.yuicompress
-                }), 'path': src});
+
+                // @todo (lucas) Need a common way to yield a result
+                d.resolve({
+                    'data': tree.toCSS({
+                        'compress': opts.compress,
+                        'yuicompress': opts.yuicompress
+                    }),
+                    'path': src
+                });
             });
             return d.promise;
         });
     })).then(function(){
         done();
+    }, function(err){
+        done(err);
     }).done();
+})
+.use('build', 'browserify', function(ctx, done){
+    var browserify = require('browserify');
+
+    Object.keys(ctx.js).map(function(src){
+        var bundle = browserify();
+        // @todo (lucas) Support for client side templates.  HBS first.
+        bundle.bundle({'debug': false}, function(err, src){
+            //
+        });
+    });
 });
 
-
+// Minify yo.
+// .transform('build:browserify', function(buf, done){});
 new Cookbook({
     'apps': {'web': recipe.context({
         'js': {
