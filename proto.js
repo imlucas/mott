@@ -1,13 +1,25 @@
 "use strict";
-var Q = require('q');
+var Q = require('q'),
+    fs = require('fs'),
+    md = require( "markdown" ).markdown;
 
 var log = {
     'debug': console.log,
     'error': console.error
 };
 
+function Context(){}
+Context.prototype.extend = function(o){
+    for(var key in o){
+        this[key] = o[key];
+    }
+
+    return this;
+};
+
 function Recipe(){
     this.steps = {};
+    this.ctx = new Context();
 }
 
 Recipe.prototype.use = function(step, func){
@@ -20,6 +32,7 @@ Recipe.prototype.use = function(step, func){
 };
 
 Recipe.prototype.context = function(tpl){
+    this.ctx.extend(tpl);
     return this;
 };
 
@@ -50,14 +63,11 @@ Cookbook.prototype.build = function(app, done){
     });
 };
 
-Cookbook.prototype.cli = function(){
-    log.debug('starting CLI');
-};
-
 Cookbook.prototype.runStepOnApp = function(app, stepName){
     return Q.all(app.steps[stepName].map(function(step){
         var d = Q.defer();
-        step({}, function(err, res){
+
+        step(app.ctx, function(err, res){
             if(err){
                 return d.reject(err);
             }
@@ -84,10 +94,30 @@ Cookbook.prototype.exec = function(appNames, stepName, done){
 
 var recipe = new Recipe()
     .use('build', function(ctx, done){
-            log.debug('inline build step');
+            log.debug('inline build step', ctx);
             done();
         }
-    );
+    )
+    .use('build', function(ctx, done){
+        if(!ctx.pages){
+            log.debug('no pages');
+            return done();
+        }
+
+        function convertMarkdown(){
+            var d = Q.defer();
+            // @todo (lucas) Better to just do in jade? with :markdown
+            // @todo (lucas) yamlFm   = require( 'front-matter' )
+            d.resovle('I am some html.');
+            return d.promise;
+        }
+        Q.all(Object.keys(ctx.pages).map(function(page){
+            if(page.indexOf('.md') > -1){
+                return convertMarkdown(page);
+            }
+        })).then(function(){done();}, function(err){done(err);})
+        .done();
+    });
 
 new Cookbook({
     'apps': {'web': recipe.context({
