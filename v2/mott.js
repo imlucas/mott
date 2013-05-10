@@ -10,6 +10,19 @@ var log = {
     'error': console.error
 };
 
+function Resource(src, dest, buf){
+    this.src = src;
+    this.dest = dest;
+    this.buf = buf;
+    this.flushes = 0;
+}
+
+// Write buf to disk
+Resource.prototype.flush = function(){
+    this.flushes++;
+};
+
+
 // @todo (lucas) Could context hold open resources that can be flushed to
 // disk after a step is completed?
 function Context(){}
