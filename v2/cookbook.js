@@ -46,10 +46,12 @@ Cookbook.prototype.run = function(taskName, done){
 Cookbook.prototype.prepare = function(done){
     var self = this;
 
+    console.log('Input', util.inspect(self.apps.web.ctx, false, 10, true));
+
     Q.all(Object.keys(this.apps).map(function(app){
         return self.apps[app].prepare();
     })).then(function(){
-        console.log(util.inspect(self.apps, true, 10, true));
+        console.log('After prepare', util.inspect(self.apps.web.ctx, false, 10, true));
         done();
     }).done();
 };

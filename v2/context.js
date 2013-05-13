@@ -80,6 +80,8 @@ Context.prototype.prepare = function(){
                 return Q();
             }
         });
-    }));
+    })).then(function(){
+        self.ready = true;
+    });
 };
 module.exports = Context;
