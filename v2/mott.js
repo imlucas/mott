@@ -13,10 +13,11 @@ var Q = require('q'),
 // disk after a step is completed?
 function Context(){
     this.resources = {};
+    this.ready = false;
 }
 
 // Transform globs / and regexes.
-Context.prototype.expand = function(){};
+Context.prototype.expand = function(done){};
 
 Context.prototype.getResource = function(src, dest, buf){
     if(!this.resources[src]){
@@ -37,21 +38,30 @@ var recipe = new Recipe()
     .register('js', require('./browserify'))
     .task('build', ['js', 'less'], 'parallel')
     .task('run', ['build', 'run', 'watch'])
-    .task('deploy', ['build', 'deploy']);
+    .task('deploy', ['build', 'deploy'])
+    .transform('js', function(ctx, resource, done){
+        if(ctx.environment !== 'production'){
+            return done();
+        }
+        // minify(resource, done);
+    })
+    .transform('less', function(ctx, resource, done){
+        if(ctx.appName !== 'web'){
+            return done();
+        }
+        // make CSS images absolute
+    });
 
-// Minify yo.
-// .transform('build:browserify', function(buf, done){});
+
 new Cookbook({
     'apps': {
         'web': recipe.configure({
             'js': {
-                'js/main.js': 'app.js'
+                'js/main.js': 'app.js',
+                'js/bootstrap-loader.js': 'bootstrap-loader.js'
             },
             'less': {
                 'less/main.less': 'app.css'
-            },
-            'pages': {
-                'index.jade': 'index.html'
             }
         })
     },
@@ -59,6 +69,62 @@ new Cookbook({
         'api_key': '123',
         'export': ['api_key']
     }
-}).exec('build', function(){
+}).run('build', function(){
+    console.log('build done');
+});
+
+// mott deploy.production --apps web,ios
+
+new Cookbook({
+    'apps': {
+        'ios': recipe.configure({
+            'js': {
+                'js/main.js': 'app.js',
+                'js/bootstrap-loader.js': 'bootstrap-loader.js'
+            },
+            'less': {
+                'less/main.less': 'app.css'
+            },
+            'platform': 'ios'
+        }).use(require('./cordova'))
+    },
+    'config': {
+        'api_key': '123',
+        'export': ['api_key']
+    }
+}).run('build', function(){
+    // will execute recipe.build then cordova.build.
+    console.log('build done');
+});
+
+
+new Cookbook({
+    'apps': {
+        'ios': recipe.configure({
+            'js': {
+                'ios/js/main.js': 'ios/app.js',
+                'ios/js/bootstrap-loader.js': 'ios/bootstrap-loader.js'
+            },
+            'less': {
+                'less/main.less': 'ios/app.css'
+            },
+            'platform': 'ios'
+        }).use(require('./cordova')),
+        'web': recipe.configure({
+            'js': {
+                'js/main.js': 'app.js',
+                'js/bootstrap-loader.js': 'bootstrap-loader.js'
+            },
+            'less': {
+                'less/main.less': 'app.css'
+            }
+        })
+    },
+    'config': {
+        'api_key': '123',
+        'export': ['api_key']
+    }
+}).run('build', function(){
+    // will execute recipe.build then cordova.build.
     console.log('build done');
 });

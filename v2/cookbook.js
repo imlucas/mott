@@ -21,7 +21,7 @@ Cookbook.prototype.runStepOnApp = function(app, stepName){
     }));
 };
 
-Cookbook.prototype.exec = function(stepName, done){
+Cookbook.prototype.exec = function(appNames, taskName, done){
     var self = this,
         names = [];
 
@@ -29,11 +29,16 @@ Cookbook.prototype.exec = function(stepName, done){
     Q.all(Object.keys(this.apps).filter(function(name){
         return ['web'].indexOf(name) > -1;
     }).map(function(name){
-        return self.runStepOnApp(self.apps[name], stepName);
+        return self.runStepOnApp(self.apps[name], taskName);
     })).then(function(){
         done();
     })
     .done();
+};
+
+
+Cookbook.prototype.run = function(taskName, done){
+
 };
 
 module.exports = Cookbook;
