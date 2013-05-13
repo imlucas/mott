@@ -1,10 +1,14 @@
 "use strict";
-var Context = require('./context');
+var Context = require('./context'),
+    Q = require('q');
 
 function RecipeInTheOven(tpl, recipe){
     this.recipe = recipe;
     this.ctx = new Context(tpl);
 }
+RecipeInTheOven.prototype.prepare = function(){
+    return this.ctx.prepare();
+};
 
 function Recipe(){
     this.steps = {};
@@ -23,7 +27,14 @@ Recipe.prototype.register = function(name, func){
 };
 
 // Declare a task.
-Recipe.prototype.task = function(){};
+Recipe.prototype.task = function(){
+    return this;
+};
+
+// Register a transform callback
+Recipe.prototype.transform = function(){
+    return this;
+};
 
 // Register a transform callback.
 // Recipe.prototype.transform = function(name, cb){
@@ -31,8 +42,7 @@ Recipe.prototype.task = function(){};
 // };
 
 Recipe.prototype.configure = function(tpl){
-    this.ctx.extend(tpl);
-    return this;
+    return new RecipeInTheOven(tpl, this);
 };
 
 module.exports = Recipe;

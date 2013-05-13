@@ -8,31 +8,6 @@ var Q = require('q'),
     Resource = require('./resource'),
     Recipe = require('./recipe');
 
-
-// @todo (lucas) Could context hold open resources that can be flushed to
-// disk after a step is completed?
-function Context(){
-    this.resources = {};
-    this.ready = false;
-}
-
-// Transform globs / and regexes.
-Context.prototype.expand = function(done){};
-
-Context.prototype.getResource = function(src, dest, buf){
-    if(!this.resources[src]){
-        this.resources[src] = new Resource(src, dest, buf);
-    }
-    return this.resources[src];
-};
-
-Context.prototype.extend = function(o){
-    for(var key in o){
-        this[key] = o[key];
-    }
-    return this;
-};
-
 var recipe = new Recipe()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
@@ -62,6 +37,9 @@ new Cookbook({
             },
             'less': {
                 'less/main.less': 'app.css'
+            },
+            'pages': {
+                'pages/*.jade': 'page/$1.html'
             }
         })
     },
@@ -69,62 +47,65 @@ new Cookbook({
         'api_key': '123',
         'export': ['api_key']
     }
-}).run('build', function(){
-    console.log('build done');
-});
+}).cli();
 
-// mott deploy.production --apps web,ios
+// // mott deploy.production --apps web,ios
 
-new Cookbook({
-    'apps': {
-        'ios': recipe.configure({
-            'js': {
-                'js/main.js': 'app.js',
-                'js/bootstrap-loader.js': 'bootstrap-loader.js'
-            },
-            'less': {
-                'less/main.less': 'app.css'
-            },
-            'platform': 'ios'
-        }).use(require('./cordova'))
-    },
-    'config': {
-        'api_key': '123',
-        'export': ['api_key']
-    }
-}).run('build', function(){
-    // will execute recipe.build then cordova.build.
-    console.log('build done');
-});
+// new Cookbook({
+//     'apps': {
+//         'ios': recipe.configure({
+//             'js': {
+//                 'js/main.js': 'app.js',
+//                 'js/bootstrap-loader.js': 'bootstrap-loader.js'
+//             },
+//             'less': {
+//                 'less/main.less': 'app.css'
+//             },
+//             'platform': 'ios'
+//         }).use(require('./cordova'))
+//     },
+//     'config': {
+//         'api_key': '123',
+//         'export': ['api_key']
+//     }
+// }).run('build', function(){
+//     // will execute recipe.build then cordova.build.
+//     console.log('build done');
+// });
 
+// Use single page recipe for both a webapp and ios app and start the cli.
+// new Cookbook({
+//     'apps': {
+//         'ios': recipe.configure({
+//             'js': {
+//                 'ios/js/main.js': 'ios/app.js',
+//                 'ios/js/bootstrap-loader.js': 'ios/bootstrap-loader.js'
+//             },
+//             'less': {
+//                 'less/main.less': 'ios/app.css'
+//             },
+//             'platform': 'ios'
+//         }).use(require('./cordova')),
+//         'web': recipe.configure({
+//             'js': {
+//                 'js/main.js': 'app.js',
+//                 'js/bootstrap-loader.js': 'bootstrap-loader.js'
+//             },
+//             'less': {
+//                 'less/main.less': 'app.css'
+//             }
+//         })
+//     },
+//     'config': {
+//         'api_key': '123',
+//         'export': ['api_key'],
+//         'deploy': 's3://mybucketname'
+//     }
+// }).cli();
 
-new Cookbook({
-    'apps': {
-        'ios': recipe.configure({
-            'js': {
-                'ios/js/main.js': 'ios/app.js',
-                'ios/js/bootstrap-loader.js': 'ios/bootstrap-loader.js'
-            },
-            'less': {
-                'less/main.less': 'ios/app.css'
-            },
-            'platform': 'ios'
-        }).use(require('./cordova')),
-        'web': recipe.configure({
-            'js': {
-                'js/main.js': 'app.js',
-                'js/bootstrap-loader.js': 'bootstrap-loader.js'
-            },
-            'less': {
-                'less/main.less': 'app.css'
-            }
-        })
-    },
-    'config': {
-        'api_key': '123',
-        'export': ['api_key']
-    }
-}).run('build', function(){
-    // will execute recipe.build then cordova.build.
-    console.log('build done');
-});
+// Command line usage:
+// Build -> (+ cordova.build for ios) -> upload to S3 -> (+ package ipa for ios)
+// ./mott deploy.production
+//
+// Or just the web app
+// ./mott deploy.production --apps web

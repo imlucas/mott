@@ -159,7 +159,7 @@ function MyRecipe(ctx){
         },
         pages: {
             "{{app}}/index.html": "/index.html",
-            "{{app}}/pages/(.*).html": "/page/$1"
+            "{{app}}/pages/*.html": "/page/$1"
         },
         include: [
             "common/*"
@@ -168,6 +168,35 @@ function MyRecipe(ctx){
     this.super_(tpl, ctx);
 }
 util.inherits(MyRecipe, Recipe);
+
+
+
+var tpl = {
+    'js': {
+        'js/main.js': 'app.js'
+    },
+    'less': {
+        'less/main.less': 'app.css'
+    },
+    'pages': {
+        'index.html': 'index.html'
+    }
+};
+
+var SimpleRecipe = Recipe.extend({});
+
+new Cookbook({
+    'apps': {'web': new SimpleRecipe(tpl)},
+    'config': {
+        'api_key': '123',
+        'export': ['api_key']
+    },
+    'environments': {
+        'production': {
+            'api_key': '456'
+        }
+    }
+}).cli();
 
 function CordovaRecipe(){
     this.cordova = {
