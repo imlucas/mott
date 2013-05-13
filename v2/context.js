@@ -60,6 +60,8 @@ Context.prototype.prepare = function(){
                     matches.map(function(match){
                         self[key][match] = {};
 
+                        // Now for fun...
+                        // Handle pages/*.jade: pages/$1.html
                         if(dest.indexOf('$') > -1){
                             self[key][match].dest = match.replace(re, dest);
                         }
