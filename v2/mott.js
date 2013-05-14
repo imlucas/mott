@@ -26,8 +26,8 @@ new Cookbook({
     'apps': {
         'web': recipe.configure({
             'js': {
-                'js/main.js': 'app.js',
-                'js/bootstrap-loader.js': 'bootstrap-loader.js'
+                './js/main.js': 'app.js',
+                './js/bootstrap-loader.js': 'bootstrap-loader.js'
             },
             'less': {
                 'less/main.less': 'app.css'
