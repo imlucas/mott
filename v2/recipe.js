@@ -10,9 +10,9 @@ RecipeInTheOven.prototype.prepare = function(){
     return this.ctx.prepare();
 };
 
-function Recipe(){
+function Recipe(name){
     this.steps = {};
-    this.nameToStep = {};
+    this.name = name;
 }
 
 // @todo (lucas) Keep a mapping so we can fire callbacks when particular

@@ -20,14 +20,6 @@ function Context(tpl){
     }
 }
 
-// Transform globs / and regexes.
-Context.prototype.expand = function(done){
-    this.keys.forEach(function(k){
-
-    });
-    return this;
-};
-
 Context.prototype.extend = function(o){
     for(var key in o){
         this[key] = o[key];

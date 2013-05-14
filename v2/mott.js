@@ -1,14 +1,8 @@
 "use strict";
-var Q = require('q'),
-    fs = require('fs'),
-    md = require( "markdown" ).markdown,
-    readFile = Q.denodeify(fs.readFile),
-    writeFile = Q.denodeify(fs.writeFile),
-    Cookbook = require('./cookbook'),
-    Resource = require('./resource'),
-    Recipe = require('./recipe');
+var mott = require('./index'),
+    Cookbook = mott.Cookbook;
 
-var recipe = new Recipe()
+var recipe = mott()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
     .task('build', ['js', 'less'], 'parallel')
@@ -38,9 +32,13 @@ new Cookbook({
             'less': {
                 'less/main.less': 'app.css'
             },
-            'pages': {
-                'pages/*.jade': 'page/$1.html'
-            }
+            // 'pages': {
+            //     'pages/*.jade': 'page/$1.html'
+            // },
+            // 'includes': [
+            //     'common/images/**',
+            //     'common/fonts/**'
+            // ]
         })
     },
     'config': {
