@@ -32,6 +32,9 @@ new Cookbook({
             'less': {
                 'less/main.less': 'app.css'
             },
+            'includes': [
+                "./index.html"
+            ]
             // 'pages': {
             //     'pages/*.jade': 'page/$1.html'
             // },

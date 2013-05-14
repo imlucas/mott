@@ -22,14 +22,21 @@ module.exports = function(name){
             var seen = [];
             Q.all(ctx.includes.map(function(include){
                 var d = Q.defer();
-                new Glob(include, {match: true}, function(matches){
-                    matches.map(function(match){
-                        if(seen.indexOf(match) === -1){
-                            seen.push(match);
-                        }
+                if(include.indexOf('*') > -1){
+                    new Glob(include, {match: true}, function(matches){
+                        console.log(include, matches);
+                        matches.map(function(match){
+                            if(seen.indexOf(match) === -1){
+                                seen.push(match);
+                            }
+                        });
+                        d.resolve();
                     });
+                }
+                else {
+                    seen.push('index.html');
                     d.resolve();
-                });
+                }
                 return d.promise;
             })).then(function(){
                 return Q.all(seen.map(function(src){
