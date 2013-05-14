@@ -6,6 +6,7 @@ function RecipeInTheOven(tpl, recipe){
     this.recipe = recipe;
     this.ctx = new Context(tpl);
 }
+
 RecipeInTheOven.prototype.prepare = function(){
     return this.ctx.prepare();
 };
@@ -23,6 +24,7 @@ RecipeInTheOven.prototype.runTask = function(taskName){
                 p.then(function(){
                     return Q.all(self.recipe.steps[step].map(function(_){
                         var d = Q.defer();
+                        console.log('running: ' + taskName, '=>', step);
                         _(self.ctx, function(err, res){
                             if(err){
                                 return d.reject(err);
@@ -56,6 +58,7 @@ function Recipe(name){
     this.tasks = {};
 
     this.name = name;
+    console.log('making recipe');
 }
 
 // @todo (lucas) Keep a mapping so we can fire callbacks when particular
@@ -66,7 +69,7 @@ Recipe.prototype.register = function(name, func){
     }
 
     this.steps[name].push(func);
-    console.log('registered ', name, func);
+    console.log('registered task', name);
     return this;
 };
 
@@ -85,11 +88,6 @@ Recipe.prototype.task = function(name, steps, mode){
 Recipe.prototype.transform = function(name, done){
     return this;
 };
-
-// Register a transform callback.
-// Recipe.prototype.transform = function(name, cb){
-//     return this;
-// };
 
 Recipe.prototype.configure = function(tpl){
     return new RecipeInTheOven(tpl, this);

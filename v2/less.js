@@ -33,12 +33,12 @@ module.exports = function(ctx, done){
                 }
 
                 // @todo (lucas) Need a common way to yield a result
-                d.resolve({
-                    'data': tree.toCSS({
-                        'compress': opts.compress,
-                        'yuicompress': opts.yuicompress
-                    }),
-                    'path': src
+                var buf = tree.toCSS({
+                    'compress': opts.compress,
+                    'yuicompress': opts.yuicompress
+                });
+                fs.writeFile('build/' + ctx.less[src], buf, function(err){
+                    d.resolve({'src': src, 'buf': buf, 'dest': ctx.less[src]});
                 });
             });
             return d.promise;

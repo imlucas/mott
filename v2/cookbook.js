@@ -13,13 +13,12 @@ Cookbook.prototype.exec = function(taskName, opts, done){
         names = [],
         appNames = opts.apps || 'all',
         allAppNames = Object.keys(this.apps);
-    // @todo (lucas) Decorate context more based on selected environment,
-    // rebuild config, etc.
+    // @todo (lucas) Decorate context more based on selected environment
     Q.all(allAppNames.filter(function(name){
         if(appNames === 'all'){
             return true;
         }
-        return ['web', 'all', 'ios'].indexOf(name) > -1;
+        return allAppNames.indexOf(name) > -1;
     }).map(function(name){
         return self.apps[name].runTask(taskName);
     })).then(function(){
@@ -39,7 +38,7 @@ Cookbook.prototype.cli = function(){
     var self = this;
 
     self.prepare(function(){
-        console.log('prepared.');
+        console.log('cookbook prepared.');
         self.exec('build', {}, function(){
             console.log('build done');
         });
