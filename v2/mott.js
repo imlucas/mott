@@ -33,15 +33,11 @@ new Cookbook({
                 'less/main.less': 'app.css'
             },
             'includes': [
-                "./index.html"
+                "index.html"
             ]
             // 'pages': {
             //     'pages/*.jade': 'page/$1.html'
             // },
-            // 'includes': [
-            //     'common/images/**',
-            //     'common/fonts/**'
-            // ]
         })
     },
     'config': {
