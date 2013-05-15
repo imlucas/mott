@@ -56,6 +56,8 @@ RecipeInTheOven.prototype.runTask = function(taskName){
 function Recipe(name){
     this.steps = {};
     this.tasks = {};
+    this.befores = {};
+    this.afters = {};
 
     this.name = name;
     console.log('making recipe');
@@ -70,6 +72,24 @@ Recipe.prototype.register = function(name, func){
 
     this.steps[name].push(func);
     console.log('registered task', name);
+    return this;
+};
+
+Recipe.prototype.after = function(name, func){
+    if(!this.afters[name]){
+        this.afters[name] = [];
+    }
+
+    this.afters[name].push(func);
+    return this;
+};
+
+Recipe.prototype.before = function(name, func){
+    if(!this.befores[name]){
+        this.befores[name] = [];
+    }
+
+    this.befores[name].push(func);
     return this;
 };
 
