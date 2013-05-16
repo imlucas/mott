@@ -5,6 +5,30 @@ var mott = require('./index'),
 var recipe = mott()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
+    .register('watch', function(ctx, done){
+        var fs = require('fs'),
+            lock = false;
+
+        fs.watch(__dirname, function(event, filename){
+            if(!lock){
+                lock = true;
+                console.log(event, filename);
+                ctx.runTask('build', function(){
+                    if(ctx.server){
+                        console.log('restarting server');
+                        ctx.server.close();
+                        ctx.server = ctx.app.listen(8080, function(){
+                            console.log('dev server listening');
+                        });
+                    }
+                    setTimeout(function(){
+                        lock = false;
+                    }, 200);
+                });
+            }
+        });
+        done();
+    })
     .register('run dev server', function(ctx, done){
         var express = require('express'),
             app = express();
@@ -15,7 +39,7 @@ var recipe = mott()
             return res.sendfile(__dirname + '/build/index.html');
         });
 
-        app.listen(8080, function(){
+        ctx.server = app.listen(8080, function(){
             ctx.app = app;
             done();
         });
@@ -59,7 +83,7 @@ var recipe = mott()
         }).done();
     })
     .task('build', ['js', 'less', 'pages'], 'parallel')
-    .task('run', ['build', 'run dev server'])
+    .task('run', ['build', 'run dev server', 'watch'])
     .task('deploy', ['build', 'deploy'])
     .transform('js', function(ctx, resource, done){
         if(ctx.environment !== 'production'){

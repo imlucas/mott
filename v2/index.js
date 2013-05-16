@@ -59,8 +59,9 @@ module.exports = function(name){
 
 module.exports.Recipe = Recipe;
 module.exports.Cookbook = require('./cookbook');
-// var recipe = mott.recipe('single-page');
 
+
+// var recipe = mott.recipe('single-page');
 // New mini:
 // var mott = require('mott');
 // new mott.Cookbook({apps: {'web': mott.recipe('single-pager').configure()}}).cli();

@@ -76,4 +76,9 @@ Context.prototype.prepare = function(){
         self.ready = true;
     });
 };
+
+Context.prototype.runTask = function(name, done){
+    return this.cookbook.exec(name, {}, done);
+};
+
 module.exports = Context;
