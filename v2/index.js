@@ -60,7 +60,6 @@ module.exports = function(name){
 module.exports.Recipe = Recipe;
 module.exports.Cookbook = require('./cookbook');
 
-
 // var recipe = mott.recipe('single-page');
 // New mini:
 // var mott = require('mott');
