@@ -33,7 +33,8 @@
     "glob": "3.1.21",
     "handlebars-runtime": "1.0.0",
     "handlebars": "1.0.10",
-    "through": "2.2.7"
+    "through": "2.2.7",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "mocha": "1.8.1"

@@ -20,7 +20,45 @@ var recipe = mott()
             done();
         });
     })
-    .task('build', ['js', 'less'], 'parallel')
+    .register('pages', function(ctx, done){
+        if(!ctx.pages){
+            return done();
+        }
+        var jade = require('jade'),
+            fs = require('fs'),
+            Q = require('q'),
+            mkdirp = require('mkdirp'),
+            path = require('path');
+
+        Q.all(Object.keys(ctx.pages).map(function(src){
+            var dest = ctx.pages[src].dest,
+                d = Q.defer();
+
+            fs.readFile(src, 'utf-8', function(err, buf){
+                jade.render(buf, {'filename': src}, function(err, data){
+                    if(err){
+                        return d.reject(err);
+                    }
+
+                    mkdirp(path.dirname('build/' + dest), function(err){
+                        if(err){
+                            return d.reject(err);
+                        }
+                        fs.writeFile('build/' + dest, data, function(err){
+                            if(err){
+                                return d.reject(err);
+                            }
+                            d.resolve();
+                        });
+                    });
+                });
+            });
+            return d.promise;
+        })).then(function(){
+            done();
+        }).done();
+    })
+    .task('build', ['js', 'less', 'pages'], 'parallel')
     .task('run', ['build', 'run dev server'])
     .task('deploy', ['build', 'deploy'])
     .transform('js', function(ctx, resource, done){
@@ -49,10 +87,10 @@ new Cookbook({
             },
             'includes': [
                 "index.html"
-            ]
-            // 'pages': {
-            //     'pages/*.jade': 'page/$1.html'
-            // },
+            ],
+            'pages': {
+                'pages/*.jade': 'page/$1.html'
+            },
         })
     },
     'config': {
