@@ -39,8 +39,11 @@ Cookbook.prototype.cli = function(){
 
     self.prepare(function(){
         console.log('cookbook prepared.');
-        self.exec('build', {}, function(){
-            console.log('build done');
+        // self.exec('build', {}, function(){
+        //     console.log('build done');
+        // });
+        self.exec('run', {}, function(){
+            console.log('running');
         });
     });
 };

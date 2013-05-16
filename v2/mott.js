@@ -5,8 +5,23 @@ var mott = require('./index'),
 var recipe = mott()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
+    .register('run dev server', function(ctx, done){
+        var express = require('express'),
+            app = express();
+
+        app.use(express.static(__dirname + '/build'));
+
+        app.get('/', function(req, res){
+            return res.sendfile(__dirname + '/build/index.html');
+        });
+
+        app.listen(8080, function(){
+            ctx.app = app;
+            done();
+        });
+    })
     .task('build', ['js', 'less'], 'parallel')
-    .task('run', ['build', 'run', 'watch'])
+    .task('run', ['build', 'run dev server'])
     .task('deploy', ['build', 'deploy'])
     .transform('js', function(ctx, resource, done){
         if(ctx.environment !== 'production'){
