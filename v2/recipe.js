@@ -23,7 +23,7 @@ RecipeInTheOven.prototype.runTask = function(taskName){
             task.steps.map(function(step){
                 p.then(function(){
                     var func = self.recipe.steps[step];
-                    if(!func){ // Its another task.
+                    if(!func && step != taskName){ // Its another task.
                         return self.runTask(step);
                     }
 

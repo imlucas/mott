@@ -51,17 +51,21 @@ Cookbook.prototype.list = function(){
 
 Cookbook.prototype.cli = function(){
     var self = this,
+        opts = {},
         appNames = (argv.apps || argv.app || '').split(',');
 
     if(appNames.length === 0){
         appNames = 'all';
     }
 
+    opts.apps = appNames;
+    opts.environment = process.NODE_ENV || argv.env || argv.environment;
+
     self.prepare(function(){
         if(argv.l || argv.list){
             return self.list();
         }
-        self.exec(argv._[0], {'apps': appNames}, function(){
+        self.exec(argv._[0], opts, function(){
         });
     });
 };
