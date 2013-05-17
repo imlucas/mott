@@ -24,6 +24,7 @@ Cookbook.prototype.exec = function(taskName, opts, done){
             return function(cb){
                 console.log('Running ' + taskName + '.' + name + '...');
                 self.apps[name].ctx.environment = opts.environment;
+                self.apps[name].ctx.config = self.config;
                 self.apps[name].runTask(taskName, cb);
             };
         });
@@ -60,7 +61,7 @@ Cookbook.prototype.cli = function(){
     }
 
     opts.apps = appNames;
-    opts.environment = process.NODE_ENV || argv.env || argv.environment;
+    opts.environment = process.NODE_ENV || argv.env || argv.environment || 'development';
 
     self.prepare(function(){
         if(argv.l || argv.list){

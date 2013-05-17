@@ -20,7 +20,6 @@ module.exports = function(ctx, done){
 
     Q.all(Object.keys(ctx.less).map(function(src){
         return readFile(src, 'utf-8').then(function(buf){
-            // @todo (lucas) Replace with Q.fncall?
             var d = Q.defer();
             new less.Parser({
                 'paths': [path.dirname(src)],
@@ -31,8 +30,6 @@ module.exports = function(ctx, done){
                 if(err){
                     return d.reject(err);
                 }
-
-                // @todo (lucas) Need a common way to yield a result
                 var buf = tree.toCSS({
                     'compress': opts.compress,
                     'yuicompress': opts.yuicompress

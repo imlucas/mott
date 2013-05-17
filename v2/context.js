@@ -28,6 +28,17 @@ Context.prototype.extend = function(o){
     return this;
 };
 
+Context.prototype.getConfig = function(){
+    var o = {},
+        self = this;
+
+    (this.config.export || Object.keys(this.config)).map(function(key){
+        o[key] = self.config[key];
+    });
+    o.environment = this.environment;
+    return o;
+};
+
 Context.prototype.prepare = function(){
     var self = this;
 

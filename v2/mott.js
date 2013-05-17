@@ -4,8 +4,45 @@
 var mott = require('./index'),
     Cookbook = mott.Cookbook;
 
+var fs = require('fs');
+var crypto = require('crypto');
+
+function getFileInfo(src, cb){
+    fs.stat(src, function(err, stats){
+        if(err) {
+            return cb(err);
+        }
+
+        stats.src = src;
+        stats.dest = src.replace('build/', '/');
+        if(!stats.isFile()){
+            return cb(null, stats);
+        }
+        fs.readFile(src, function(err, data){
+            if(err) {
+                return cb(err);
+            }
+
+            stats.md5 =  crypto.createHash('md5').update(data).digest('hex');
+            return cb(null, stats);
+        });
+
+    });
+}
+
 function deployAllToS3(ctx, done){
-    done();
+    var Glob = require('glob').Glob,
+        async = require('async'),
+        files = [];
+
+    new Glob('build/**', {'match': true}, function(err, matches){
+        async.map(matches, getFileInfo, function(err, results){
+            results = results.filter(function(stat){
+                return stat.isFile();
+            });
+            done();
+        });
+    });
 }
 
 var recipe = mott()
@@ -15,7 +52,28 @@ var recipe = mott()
     .register('run', require('./dev-server.js'))
     .register('pages', require('./pages.js'))
     .register('deploy', deployAllToS3)
-    .task('build', ['js', 'less', 'pages'])
+    .register('write bootstrap', function(ctx, done){
+        var async = require('async'),
+            files = [];
+
+        ['less', 'js'].forEach(function(key){
+            files.push.apply(files, Object.keys(ctx[key]).map(function(src){
+                return 'build/' + ctx[key][src].dest;
+            }));
+        });
+
+        async.map(files, getFileInfo, function(err, res){
+            var bootstrap = ctx.getConfig();
+
+            res.map(function(file){
+                bootstrap[file.dest] = file.md5;
+            });
+            fs.writeFile('build/bootstrap.js', JSON.stringify(bootstrap, null, 4), function(err){
+                done(err);
+            });
+        });
+    })
+    .task('build', ['js', 'less', 'pages', 'write bootstrap'])
 
     .task('run', ['build', 'run', 'watch'])
 
