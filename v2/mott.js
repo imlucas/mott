@@ -5,83 +5,9 @@ var mott = require('./index'),
 var recipe = mott()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
-    .register('watch', function(ctx, done){
-        var fs = require('fs'),
-            lock = false;
-
-        fs.watch(__dirname, function(event, filename){
-            if(!lock){
-                lock = true;
-                console.log(event, filename);
-                ctx.runTask('build', function(){
-                    if(ctx.server){
-                        console.log('restarting server');
-                        ctx.server.close();
-                        ctx.server = ctx.app.listen(8080, function(){
-                            console.log('dev server listening');
-                        });
-                    }
-                    setTimeout(function(){
-                        lock = false;
-                    }, 200);
-                });
-            }
-        });
-        done();
-    })
-    .register('run dev server', function(ctx, done){
-        var express = require('express'),
-            app = express();
-
-        app.use(express.static(__dirname + '/build'));
-
-        app.get('/', function(req, res){
-            return res.sendfile(__dirname + '/build/index.html');
-        });
-
-        ctx.server = app.listen(8080, function(){
-            ctx.app = app;
-            done();
-        });
-    })
-    .register('pages', function(ctx, done){
-        if(!ctx.pages){
-            return done();
-        }
-        var jade = require('jade'),
-            fs = require('fs'),
-            Q = require('q'),
-            mkdirp = require('mkdirp'),
-            path = require('path');
-
-        Q.all(Object.keys(ctx.pages).map(function(src){
-            var dest = ctx.pages[src].dest,
-                d = Q.defer();
-
-            fs.readFile(src, 'utf-8', function(err, buf){
-                jade.render(buf, {'filename': src}, function(err, data){
-                    if(err){
-                        return d.reject(err);
-                    }
-
-                    mkdirp(path.dirname('build/' + dest), function(err){
-                        if(err){
-                            return d.reject(err);
-                        }
-                        fs.writeFile('build/' + dest, data, function(err){
-                            if(err){
-                                return d.reject(err);
-                            }
-                            d.resolve();
-                        });
-                    });
-                });
-            });
-            return d.promise;
-        })).then(function(){
-            done();
-        }).done();
-    })
+    .register('watch', require('./watch'))
+    .register('run dev server', require('./dev-server.js'))
+    .register('pages', require('./pages.js'))
     .task('build', ['js', 'less', 'pages'], 'parallel')
     .task('run', ['build', 'run dev server', 'watch'])
     .task('deploy', ['build', 'deploy'])
