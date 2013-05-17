@@ -10,7 +10,9 @@ var recipe = mott()
     .register('watch', require('./watch'))
     .register('run', require('./dev-server.js'))
     .register('pages', require('./pages.js'))
+    .register('deploy', function(ctx, done){
 
+    })
     .task('build', ['js', 'less', 'pages'])
 
     .task('run', ['build', 'run', 'watch'])

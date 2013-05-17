@@ -17,44 +17,30 @@ RecipeInTheOven.prototype.runTask = function(taskName){
     }
     var self = this;
 
-    this.recipe.tasks[taskName].map(function(task){
-        // if(task.mode === 'sequential'){
-            var p = Q();
-            task.steps.map(function(step){
-                p.then(function(){
-                    var func = self.recipe.steps[step];
-                    if(!func && step != taskName){ // Its another task.
-                        return self.runTask(step);
-                    }
+    return Q.all(this.recipe.tasks[taskName].map(function(task){
+        var p = Q();
+        task.steps.map(function(step){
+            var func = self.recipe.steps[step];
+            if(!func && step !== taskName){ // Its another task.
+                return self.runTask(step);
+            }
 
-                    return Q.all(func.map(function(_){
-                        var d = Q.defer();
-                        console.log('running: ' + taskName, '=>', step);
-                        _(self.ctx, function(err, res){
-                            if(err){
-                                return d.reject(err);
-                            }
-                            return d.resolve(res);
-                        });
-                        return d.promise;
-                    }));
-                });
+            p.then(function(){
+                return Q.all(func.map(function(_){
+                    var d = Q.defer();
+                    console.log('running: ' + taskName, '=>', step);
+                    _(self.ctx, function(err, res){
+                        if(err){
+                            return d.reject(err);
+                        }
+                        return d.resolve(res);
+                    });
+                    return d.promise;
+                }));
             });
-            return p.done();
-        // }
-        // else {
-        //     return Q.all(task.steps.map(function(step){
-        //         var d = Q.defer();
-        //         step(self.ctx, function(err, res){
-        //             if(err){
-        //                 return d.reject(err);
-        //             }
-        //             return d.resolve(res);
-        //         });
-        //         return d.promise;
-        //     }));
-        // }
-    });
+        });
+        return p;
+    })).done();
 };
 
 
