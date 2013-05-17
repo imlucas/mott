@@ -37,7 +37,7 @@ module.exports = function(ctx, done){
                     'compress': opts.compress,
                     'yuicompress': opts.yuicompress
                 });
-                fs.writeFile('build/' + ctx.less[src], buf, function(err){
+                fs.writeFile('build/' + ctx.less[src].dest, buf, function(err){
                     d.resolve({'src': src, 'buf': buf, 'dest': ctx.less[src]});
                 });
             });

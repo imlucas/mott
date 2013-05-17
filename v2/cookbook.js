@@ -1,7 +1,8 @@
 "use strict";
 
 var Q = require('q'),
-    util = require('util');
+    util = require('util'),
+    argv = require('optimist').argv;
 
 function Cookbook(opts){
     this.config = opts.config;
@@ -37,13 +38,30 @@ Cookbook.prototype.prepare = function(done){
     })).then(done).done();
 };
 
-Cookbook.prototype.cli = function(){
+Cookbook.prototype.list = function(){
     var self = this;
+    Object.keys(this.apps).map(function(appName){
+        console.log(appName);
+        var tasks = self.apps[appName].recipe.tasks;
+        Object.keys(tasks).map(function(taskName){
+            console.log('  * ' + taskName);
+        });
+    });
+};
+
+Cookbook.prototype.cli = function(){
+    var self = this,
+        appNames = (argv.apps || argv.app || '').split(',');
+
+    if(appNames.length === 0){
+        appNames = 'all';
+    }
 
     self.prepare(function(){
-        console.log('cookbook prepared.');
-        self.exec('run', {}, function(){
-            console.log('running');
+        if(argv.l || argv.list){
+            return self.list();
+        }
+        self.exec(argv._[0], {'apps': appNames}, function(){
         });
     });
 };

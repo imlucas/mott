@@ -12,7 +12,7 @@ module.exports = function(ctx, done){
 
         // @todo (lucas) Support for client side templates.  HBS first.
         bundle.bundle({'debug': false}, function(err, buf){
-            fs.writeFile('build/' + ctx.js[src], buf, function(err){
+            fs.writeFile('build/' + ctx.js[src].dest, buf, function(err){
                 d.resolve({'src': src, 'buf': buf, 'dest': ctx.js[src]});
             });
         });

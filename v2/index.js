@@ -20,37 +20,28 @@ module.exports = function(name){
                 return done();
             }
             var seen = [];
-            Q.all(ctx.includes.map(function(include){
-                var d = Q.defer();
-                if(include.indexOf('*') > -1){
-                    new Glob(include, {match: true}, function(matches){
-                        console.log(include, matches);
-                        matches.map(function(match){
-                            if(seen.indexOf(match) === -1){
-                                seen.push(match);
-                            }
-                        });
-                        d.resolve();
-                    });
-                }
-                else {
-                    seen.push('index.html');
+
+            Q.all(Object.keys(ctx.includes).map(function(include){
+                // var d = Q.defer();
+                //     new Glob(include, {match: true}, function(matches){
+                //         console.log(include, matches);
+                //         matches.map(function(match){
+                //             if(seen.indexOf(match) === -1){
+                //                 seen.push(match);
+                //             }
+                //         });
+                //         d.resolve();
+                //     });
+                var d = Q.defer(),
+                    readStream = fs.createReadStream(include),
+                    writeStream = fs.createWriteStream('build/' + ctx.includes[include].dest);
+
+                readStream.pipe(writeStream);
+                readStream.once('end', function(){
                     d.resolve();
-                }
+                });
                 return d.promise;
             })).then(function(){
-                return Q.all(seen.map(function(src){
-                    var d = Q.defer(),
-                        readStream = fs.createReadStream(src),
-                        writeStream = fs.createWriteStream('build/' + src);
-
-                    readStream.pipe(writeStream);
-                    readStream.once('end', function(){
-                        d.resolve();
-                    });
-                    return d.promise;
-                }));
-            }).then(function(){
                 done();
             }).done();
         })

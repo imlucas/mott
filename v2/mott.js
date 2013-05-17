@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 var mott = require('./index'),
     Cookbook = mott.Cookbook;
@@ -6,11 +8,15 @@ var recipe = mott()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
     .register('watch', require('./watch'))
-    .register('run dev server', require('./dev-server.js'))
+    .register('run', require('./dev-server.js'))
     .register('pages', require('./pages.js'))
-    .task('build', ['js', 'less', 'pages'], 'parallel')
-    .task('run', ['build', 'run dev server', 'watch'])
+
+    .task('build', ['js', 'less', 'pages'])
+
+    .task('run', ['build', 'run', 'watch'])
+
     .task('deploy', ['build', 'deploy'])
+
     .transform('js', function(ctx, resource, done){
         if(ctx.environment !== 'production'){
             return done();
@@ -35,9 +41,9 @@ new Cookbook({
             'less': {
                 'less/main.less': 'app.css'
             },
-            'includes': [
-                "index.html"
-            ],
+            'includes': {
+                "index.html": "index.html"
+            },
             'pages': {
                 'pages/*.jade': 'page/$1.html'
             },

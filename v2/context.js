@@ -69,7 +69,7 @@ Context.prototype.prepare = function(){
                 return d.promise;
             }
             else {
-                return Q();
+                self[key][src] = {'dest': self[key][src]};
             }
         });
     })).then(function(){

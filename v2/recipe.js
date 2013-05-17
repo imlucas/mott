@@ -22,7 +22,12 @@ RecipeInTheOven.prototype.runTask = function(taskName){
             var p = Q();
             task.steps.map(function(step){
                 p.then(function(){
-                    return Q.all(self.recipe.steps[step].map(function(_){
+                    var func = self.recipe.steps[step];
+                    if(!func){ // Its another task.
+                        return self.runTask(step);
+                    }
+
+                    return Q.all(func.map(function(_){
                         var d = Q.defer();
                         console.log('running: ' + taskName, '=>', step);
                         _(self.ctx, function(err, res){
@@ -60,7 +65,6 @@ function Recipe(name){
     this.afters = {};
 
     this.name = name;
-    console.log('making recipe');
 }
 
 // @todo (lucas) Keep a mapping so we can fire callbacks when particular
@@ -71,7 +75,6 @@ Recipe.prototype.register = function(name, func){
     }
 
     this.steps[name].push(func);
-    console.log('registered task', name);
     return this;
 };
 
