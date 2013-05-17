@@ -1,5 +1,7 @@
 "use strict";
 var Context = require('./context'),
+    async = require('async'),
+    util = require('util'),
     Q = require('q');
 
 function RecipeInTheOven(tpl, recipe){
@@ -11,36 +13,32 @@ RecipeInTheOven.prototype.prepare = function(){
     return this.ctx.prepare();
 };
 
-RecipeInTheOven.prototype.runTask = function(taskName){
+RecipeInTheOven.prototype.runTask = function(taskName, done){
     if(!this.recipe.tasks[taskName]){
-        throw new Error('"' + taskName + '" task not registered');
+        done(new Error('"' + taskName + '" task not registered'));
     }
-    var self = this;
+    var self = this,
+        tasks = [];
 
-    return Q.all(this.recipe.tasks[taskName].map(function(task){
-        var p = Q();
+    this.recipe.tasks[taskName].map(function(task){
         task.steps.map(function(step){
             var func = self.recipe.steps[step];
             if(!func && step !== taskName){ // Its another task.
-                return self.runTask(step);
+                return tasks.push(function(cb){
+                    self.runTask(step, cb);
+                });
             }
 
-            p.then(function(){
-                return Q.all(func.map(function(_){
-                    var d = Q.defer();
+            tasks.push.apply(tasks, func.map(function(_){
+                return function(cb){
                     console.log('running: ' + taskName, '=>', step);
-                    _(self.ctx, function(err, res){
-                        if(err){
-                            return d.reject(err);
-                        }
-                        return d.resolve(res);
-                    });
-                    return d.promise;
-                }));
-            });
+                    _(self.ctx, cb);
+                };
+            }));
         });
-        return p;
-    })).done();
+    });
+
+    async.series(tasks, done);
 };
 
 

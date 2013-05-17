@@ -4,15 +4,17 @@
 var mott = require('./index'),
     Cookbook = mott.Cookbook;
 
+function deployAllToS3(ctx, done){
+    done();
+}
+
 var recipe = mott()
     .register('less', require('./less'))
     .register('js', require('./browserify'))
     .register('watch', require('./watch'))
     .register('run', require('./dev-server.js'))
     .register('pages', require('./pages.js'))
-    .register('deploy', function(ctx, done){
-
-    })
+    .register('deploy', deployAllToS3)
     .task('build', ['js', 'less', 'pages'])
 
     .task('run', ['build', 'run', 'watch'])

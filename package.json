@@ -38,7 +38,9 @@
     "express": "3.2.4",
     "q": "0.9.3",
     "optimist": "~0.4.0",
-    "jade": "~0.30.0"
+    "jade": "~0.30.0",
+    "aws-sdk": "~1.1.0",
+    "async": "~0.2.8"
   },
   "devDependencies": {
     "mocha": "1.8.1"

@@ -2,6 +2,7 @@
 
 var Q = require('q'),
     util = require('util'),
+    async = require('async'),
     argv = require('optimist').argv;
 
 function Cookbook(opts){
@@ -13,21 +14,21 @@ Cookbook.prototype.exec = function(taskName, opts, done){
     var self = this,
         names = [],
         appNames = opts.apps || 'all',
-        allAppNames = Object.keys(this.apps);
+        allAppNames = Object.keys(this.apps),
+        tasks = allAppNames.filter(function(name){
+            if(appNames === 'all'){
+                return true;
+            }
+            return allAppNames.indexOf(name) > -1;
+        }).map(function(name){
+            return function(cb){
+                console.log('Running ' + taskName + '.' + name + '...');
+                self.apps[name].ctx.environment = opts.environment;
+                self.apps[name].runTask(taskName, cb);
+            };
+        });
 
-    // @todo (lucas) Decorate context more based on selected environment
-    Q.all(allAppNames.filter(function(name){
-        if(appNames === 'all'){
-            return true;
-        }
-        return allAppNames.indexOf(name) > -1;
-    }).map(function(name){
-        self.apps[name].ctx.cookbook = self;
-        return self.apps[name].runTask(taskName);
-    })).then(function(){
-        done();
-    })
-    .done();
+    async.series(tasks, done);
 };
 
 Cookbook.prototype.prepare = function(done){
@@ -65,7 +66,12 @@ Cookbook.prototype.cli = function(){
         if(argv.l || argv.list){
             return self.list();
         }
-        self.exec(argv._[0], opts, function(){
+        self.exec(argv._[0], opts, function(err){
+            if(err){
+                console.error(err);
+                return process.exit(1);
+            }
+            console.log('complete');
         });
     });
 };
