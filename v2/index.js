@@ -1,9 +1,6 @@
 "use strict";
 
-var Recipe = require('./recipe'),
-    fs = require('fs'),
-    Glob = require('glob').Glob,
-    Q = require('q');
+var Recipe = require('./recipe');
 
 module.exports = function(name){
     return new Recipe(name)
