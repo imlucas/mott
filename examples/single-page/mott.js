@@ -4,10 +4,6 @@
 var mott = require('../../lib'),
     Cookbook = mott.Cookbook;
 
-var fs = require('fs');
-var crypto = require('crypto');
-
-
 // function deployAllToS3(ctx, done){
 //     var Glob = require('glob').Glob,
 //         async = require('async'),
@@ -31,12 +27,13 @@ var recipe = mott()
     .register('pages', require('../../lib/tasks/pages.js'))
     .register('write bootstrap', require('../../lib/tasks/write-bootstrap.js'))
     .register('deploy to github', require('../../lib/tasks/deploy-to-github.js'))
+    .register('build appcache', require('../../lib/tasks/build-appcache.js'))
 
     .task('build', ['js', 'less', 'pages', 'write bootstrap'])
 
     .task('run', ['build', 'run', 'watch'])
 
-    .task('deploy', ['build', 'deploy to github'])
+    .task('deploy', ['build', 'build appcache', 'deploy to github'])
     .shortcut('deploy.production', function(opts, done){
         opts.environment = 'production';
         done();
