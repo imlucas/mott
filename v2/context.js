@@ -18,7 +18,18 @@ function Context(tpl){
     if(tpl){
         this.extend(tpl);
     }
+    this.baseDir = __dirname;
 }
+Context.prototype.buildPath = function(dest){
+    return this.path('build/' + dest);
+};
+Context.prototype.path = function(src){
+    return this.baseDir + '/' + src;
+};
+
+Context.prototype.dest = function(key, src){
+    return this[key][src].dest;
+};
 
 Context.prototype.extend = function(o){
     for(var key in o){

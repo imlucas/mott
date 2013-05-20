@@ -7,44 +7,8 @@ var Recipe = require('./recipe'),
 
 module.exports = function(name){
     return new Recipe(name)
-        .register('make build dir', function(ctx, done){
-            fs.exists('build', function(exists){
-                if(exists){
-                    return done();
-                }
-                fs.mkdir('build', done);
-            });
-        })
-        .register('copy includes', function(ctx, done){
-            if(!ctx.includes || ctx.includes.length === 0){
-                return done();
-            }
-            var seen = [];
-
-            Q.all(Object.keys(ctx.includes).map(function(include){
-                // var d = Q.defer();
-                //     new Glob(include, {match: true}, function(matches){
-                //         console.log(include, matches);
-                //         matches.map(function(match){
-                //             if(seen.indexOf(match) === -1){
-                //                 seen.push(match);
-                //             }
-                //         });
-                //         d.resolve();
-                //     });
-                var d = Q.defer(),
-                    readStream = fs.createReadStream(include),
-                    writeStream = fs.createWriteStream('build/' + ctx.includes[include].dest);
-
-                readStream.pipe(writeStream);
-                readStream.once('end', function(){
-                    d.resolve();
-                });
-                return d.promise;
-            })).then(function(){
-                done();
-            }).done();
-        })
+        .register('make build dir', require('./lib/tasks/make-build-dir'))
+        .register('copy includes', require('./lib/tasks/copy-includes'))
         .task('build', ['make build dir', 'copy includes']);
 };
 
