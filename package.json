@@ -3,10 +3,10 @@
   "name": "mott",
   "description": "A build tool for writing awesome multiplatform apps in Javascript and HTML",
   "version": "0.0.2",
-  "homepage": "http://github.com/exfm/mott",
+  "homepage": "http://github.com/imlucas/mott",
   "repository": {
     "type": "git",
-    "url": "git://github.com/exfm/mott.git"
+    "url": "git://github.com/imlucas/mott.git"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha"
