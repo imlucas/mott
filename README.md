@@ -2,7 +2,7 @@
 
 A build tool for writing awesome multiplatform apps in Javascript and HTML.
 
-[![Build Status](https://secure.travis-ci.org/exfm/mott.png)](http://travis-ci.org/imlucas/mott)
+[![Build Status](https://secure.travis-ci.org/imlucas/mott.png)](http://travis-ci.org/imlucas/mott)
 
 This is still a very early release as we're still doing some housekeeping but have a
 look at the [example](https://github.com/imlucas/mott/tree/master/examples) for usage.
