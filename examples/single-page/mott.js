@@ -35,11 +35,6 @@ var recipe = mott()
 
     .task('deploy', ['build', 'build appcache', 'deploy to github'])
 
-    .shortcut('deploy.production', function(opts, done){
-        opts.environment = 'production';
-        done();
-    })
-
     .transform('js', function(ctx, resource, done){
         if(ctx.environment !== 'production'){
             return done();
