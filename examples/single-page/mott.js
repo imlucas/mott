@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 "use strict";
-var mott = require('./index'),
+var mott = require('../../lib'),
     Cookbook = mott.Cookbook;
 
 var fs = require('fs');
@@ -46,11 +46,11 @@ function deployAllToS3(ctx, done){
 }
 
 var recipe = mott()
-    .register('less', require('./less'))
-    .register('js', require('./browserify'))
-    .register('watch', require('./watch'))
-    .register('run', require('./dev-server.js'))
-    .register('pages', require('./pages.js'))
+    .register('less', require('../../lib/tasks/less'))
+    .register('js', require('../../lib/tasks/browserify'))
+    .register('watch', require('../../lib/tasks/watch'))
+    .register('run', require('../../lib/tasks/dev-server.js'))
+    .register('pages', require('../../lib/tasks/pages.js'))
     .register('deploy', deployAllToS3)
     .register('write bootstrap', function(ctx, done){
         var async = require('async'),
