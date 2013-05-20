@@ -30,11 +30,13 @@ var recipe = mott()
     .register('run', require('../../lib/tasks/dev-server.js'))
     .register('pages', require('../../lib/tasks/pages.js'))
     .register('write bootstrap', require('../../lib/tasks/write-bootstrap.js'))
+    .register('deploy to github', require('../../lib/tasks/deploy-to-github.js'))
+
     .task('build', ['js', 'less', 'pages', 'write bootstrap'])
 
     .task('run', ['build', 'run', 'watch'])
 
-    .task('deploy', ['build', 'deploy'])
+    .task('deploy', ['build', 'deploy to github'])
     .shortcut('deploy.production', function(opts, done){
         opts.environment = 'production';
         done();
@@ -62,13 +64,13 @@ new Cookbook({
                 './js/bootstrap-loader.js': 'bootstrap-loader.js'
             },
             'less': {
-                'less/main.less': 'app.css'
+                './less/main.less': 'app.css'
             },
             'includes': {
-                "index.html": "index.html"
+                "./index.html": "index.html"
             },
             'pages': {
-                'pages/*.jade': 'page/$1.html'
+                './pages/*.jade': 'page/$1.html'
             },
         })
     },

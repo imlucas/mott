@@ -34,13 +34,13 @@
     "handlebars-runtime": "1.0.0",
     "handlebars": "1.0.10",
     "through": "2.2.7",
-    "mkdirp": "0.3.5",
     "express": "3.2.4",
     "q": "0.9.3",
     "optimist": "~0.4.0",
     "jade": "~0.30.0",
     "aws-sdk": "~1.1.0",
-    "async": "~0.2.8"
+    "async": "~0.2.8",
+    "fs-extra": "~0.6.1"
   },
   "devDependencies": {
     "mocha": "1.8.1"
