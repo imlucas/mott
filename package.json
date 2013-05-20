@@ -40,7 +40,8 @@
     "jade": "~0.30.0",
     "aws-sdk": "~1.1.0",
     "async": "~0.2.8",
-    "fs-extra": "~0.6.1"
+    "fs-extra": "~0.6.1",
+    "markdown-js": "0.0.3"
   },
   "devDependencies": {
     "mocha": "1.8.1"
