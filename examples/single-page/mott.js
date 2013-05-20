@@ -35,6 +35,10 @@ var recipe = mott()
     .task('run', ['build', 'run', 'watch'])
 
     .task('deploy', ['build', 'deploy'])
+    .shortcut('deploy.production', function(opts, done){
+        opts.environment = 'production';
+        done();
+    })
 
     .transform('js', function(ctx, resource, done){
         if(ctx.environment !== 'production'){
@@ -74,7 +78,7 @@ new Cookbook({
     }
 }).cli();
 
-// // mott deploy.production --apps web,ios
+// // mott deploy --env production --apps web,ios
 
 // new Cookbook({
 //     'apps': {
