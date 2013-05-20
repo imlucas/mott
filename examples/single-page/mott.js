@@ -7,43 +7,21 @@ var mott = require('../../lib'),
 var fs = require('fs');
 var crypto = require('crypto');
 
-function getFileInfo(src, cb){
-    fs.stat(src, function(err, stats){
-        if(err) {
-            return cb(err);
-        }
 
-        stats.src = src;
-        stats.dest = src.replace('build/', '/');
-        if(!stats.isFile()){
-            return cb(null, stats);
-        }
-        fs.readFile(src, function(err, data){
-            if(err) {
-                return cb(err);
-            }
+// function deployAllToS3(ctx, done){
+//     var Glob = require('glob').Glob,
+//         async = require('async'),
+//         files = [];
 
-            stats.md5 =  crypto.createHash('md5').update(data).digest('hex');
-            return cb(null, stats);
-        });
-
-    });
-}
-
-function deployAllToS3(ctx, done){
-    var Glob = require('glob').Glob,
-        async = require('async'),
-        files = [];
-
-    new Glob('build/**', {'match': true}, function(err, matches){
-        async.map(matches, getFileInfo, function(err, results){
-            results = results.filter(function(stat){
-                return stat.isFile();
-            });
-            done();
-        });
-    });
-}
+//     new Glob('build/**', {'match': true}, function(err, matches){
+//         async.map(matches, getFileInfo, function(err, results){
+//             results = results.filter(function(stat){
+//                 return stat.isFile();
+//             });
+//             done();
+//         });
+//     });
+// }
 
 var recipe = mott()
     .register('less', require('../../lib/tasks/less'))
@@ -51,28 +29,7 @@ var recipe = mott()
     .register('watch', require('../../lib/tasks/watch'))
     .register('run', require('../../lib/tasks/dev-server.js'))
     .register('pages', require('../../lib/tasks/pages.js'))
-    .register('deploy', deployAllToS3)
-    .register('write bootstrap', function(ctx, done){
-        var async = require('async'),
-            files = [];
-
-        ['less', 'js'].forEach(function(key){
-            files.push.apply(files, Object.keys(ctx[key]).map(function(src){
-                return 'build/' + ctx[key][src].dest;
-            }));
-        });
-
-        async.map(files, getFileInfo, function(err, res){
-            var bootstrap = ctx.getConfig();
-
-            res.map(function(file){
-                bootstrap[file.dest] = file.md5;
-            });
-            fs.writeFile('build/bootstrap.js', JSON.stringify(bootstrap, null, 4), function(err){
-                done(err);
-            });
-        });
-    })
+    .register('write bootstrap', require('../../lib/tasks/write-bootstrap.js'))
     .task('build', ['js', 'less', 'pages', 'write bootstrap'])
 
     .task('run', ['build', 'run', 'watch'])
