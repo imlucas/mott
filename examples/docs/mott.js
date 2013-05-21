@@ -11,7 +11,6 @@ var mott = require('../../'),
 // Quickstart: This is as basic as it gets.
 // recipe.configure({'pages': {'./index.jade': 'index.html'}}).cook();
 
-//
 var cookbook = new mott.Cookbook({
     'apps': {
         'web': recipe.configure({
