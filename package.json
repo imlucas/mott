@@ -41,7 +41,8 @@
     "aws-sdk": "~1.1.0",
     "async": "~0.2.8",
     "fs-extra": "~0.6.1",
-    "markdown-js": "0.0.3"
+    "markdown-js": "0.0.3",
+    "socket.io": "~0.9.14"
   },
   "devDependencies": {
     "mocha": "1.8.1"
@@ -50,7 +51,7 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "bin" : {
-      "mott" : "./bin/mott.js"
+  "bin": {
+    "mott": "./bin/mott.js"
   }
 }

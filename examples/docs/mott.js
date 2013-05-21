@@ -52,20 +52,21 @@ recipe.register('fix bootstrap css paths', function(ctx, done){
     var async = require('async'),
         fs = require('fs');
 
-    Object.keys(ctx.less).map(function(src){
-        var dest = ctx.dest('less', src);
-        async.waterfall([
-            function read(callback){
-                fs.readFile(dest, 'utf-8', callback);
-            },
-            function transform(buf, callback){
-                fs.writeFile(dest, buf.replace(/\.\.\/img\//g, 'img/'), callback);
-            }
-        ], function(err){
-            done(err);
-        });
-    });
-    done();
+    async.parallel(Object.keys(ctx.less).map(function(src){
+        return function(callback){
+            var dest = ctx.dest('less', src);
+            async.waterfall([
+                function read(callback){
+                    fs.readFile(dest, 'utf-8', callback);
+                },
+                function transform(buf, callback){
+                    fs.writeFile(dest, buf.replace(/\.\.\/img\//g, 'img/'), callback);
+                }
+            ], function(err){
+                callback(err);
+            });
+        };
+    }), done);
 }).task('build', ['fix bootstrap css paths']);
 
 // Start the cli for your new cookbook.

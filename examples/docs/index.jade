@@ -6,23 +6,26 @@ html
 
     div.container-narrow
 
-        div.row-fluid
+        div.masthead
             ul.nav.nav-pills.pull-right
-                li.active
-                    a(href="#") Home
                 li
-                    a(href="#") About
+                    a(href="#")
+                        small Home
                 li
-                    a(href="#") Contact
+                    a(href="#")
+                        small About
+                li
+                    a(href="#")
+                        small Contact
+        h3.muted mott
 
         hr
-
 
         div.jumbotron
             h1 mott
             p.lead
                 | Build stuff faster.
-            a.btn.btn-large.btn-success(href="#") github
+            a.btn.btn-large(href="#") github
 
         hr
 
@@ -40,12 +43,18 @@ html
 
         div.row-fluid.marketing
             div.span12
-                h2 docs
+                h2 cookbook
+                p
+                    | The cookbook ties everything together.
+                    | Because you could have multiple apps running at once,
+                    | the cookbook handles making a single view of the world for
+                    | for you.
 
-                h3 why
 
-                h3 cookbook
+                h2 recipes
 
-                h3 recipes
+                p
+                    | Oh recipes...
 
-
+    script(src="socket.io/socket.io.js")
+    script(src="app.js")
