@@ -48,7 +48,7 @@
   },
   "optionalDependencies": {},
   "engines": {
-    "node": "*"
+    "node": ">=0.10.0"
   },
   "bin" : {
       "mott" : "./bin/mott.js"

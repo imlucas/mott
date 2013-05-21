@@ -1,23 +1,51 @@
 html
     head
         title mott - get things done.
+        link(href="app.css", rel="stylesheet")
     body
-        h1 mott
 
-        h2 start
-            :markdown
+    div.container-narrow
 
-                The easiest way
+        div.row-fluid
+            ul.nav.nav-pills.pull-right
+                li.active
+                    a(href="#") Home
+                li
+                    a(href="#") About
+                li
+                    a(href="#") Contact
 
-                    mkdir myapp && npm install -g mott && mott
-
-                Have a look at the generated code in `mott.js`
-
-                This site is built using mott.
+        hr
 
 
-        h2 cookbook
+        div.jumbotron
+            h1 mott
+            p.lead
+                | Build stuff faster.
+            a.btn.btn-large.btn-success(href="#") github
 
-        h2 recipes
+        hr
 
-        h2 why
+        div.row-fluid.marketing
+            div.span12
+                h2 start
+                pre
+                    code mkdir myapp && npm install -g mott && mott
+
+                p Have a look at the generated code in `mott.js`
+
+                p This site is built using mott.
+
+        hr
+
+        div.row-fluid.marketing
+            div.span12
+                h2 docs
+
+                h3 why
+
+                h3 cookbook
+
+                h3 recipes
+
+

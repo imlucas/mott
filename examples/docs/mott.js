@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+"use strict";
+
 var mott = require('../../'),
     recipe = mott.starter();
 
@@ -7,9 +9,6 @@ var mott = require('../../'),
 // with mott to get work done quickly.
 // Have a look at http://imlucas.github.io/mott/ for more info
 // or just ask me @__lucas.  Thanks for trying this out.
-
-// Quickstart: This is as basic as it gets.
-// recipe.configure({'pages': {'./index.jade': 'index.html'}}).cook();
 
 var cookbook = new mott.Cookbook({
     'apps': {
@@ -27,7 +26,9 @@ var cookbook = new mott.Cookbook({
                 './index.jade': 'index.html',
                 // You can also use regex for simple routing.
                 './pages/*.jade': '$1.html'
-
+            },
+            'includes': {
+                'node_modules/bootstrap/img/*.png': 'img/$1.png'
             }
         })
     },
@@ -39,10 +40,34 @@ var cookbook = new mott.Cookbook({
         'export': ['api_key']
     }
 });
+
+
 // You can add custom steps for your process like deploying to github pages
 recipe.register('deploy to github', mott.tasks['deploy-to-github']);
 // And then combine steps or other tasks into hand command line calls
 recipe.task('deploy', ['build', 'deploy to github']);
+
+
+recipe.register('fix bootstrap css paths', function(ctx, done){
+    var async = require('async'),
+        fs = require('fs');
+
+    Object.keys(ctx.less).map(function(src){
+        var dest = ctx.dest('less', src);
+        async.waterfall([
+            function read(callback){
+                fs.readFile(dest, 'utf-8', callback);
+            },
+            function transform(buf, callback){
+                fs.writeFile(dest, buf.replace(/\.\.\/img\//g, 'img/'), callback);
+            }
+        ], function(err){
+            done(err);
+        });
+    });
+    done();
+}).task('build', ['fix bootstrap css paths']);
+
 // Start the cli for your new cookbook.
 cookbook.cli();
 // Now run ./mott.js run to develop your app.
