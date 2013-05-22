@@ -133,7 +133,13 @@ html
                         | and put them in /images/$1/$2.png (see what i did
                         | there?), run js/main.js through browserify and spit
                         | that out as app.js, all simple things you could do
-                        | in the makes.
+                        | in the makes.  steps and recipes can also modify
+                        | tpl (which really, really needs another name) to
+                        | abstract away more tooling configuration; copy
+                        | the bootstrap glyphs to build/img/, compile
+                        | posts/*.jade templates and put them in build/post/$1,
+                        | create permalinks in S3 website configuration
+                        | for all of my blog posts, etc.
 
                     p
                         | (environments are wip) you can also specify
@@ -163,6 +169,8 @@ html
                         | "config" which are values you want accessible in
                         | your app code and/or your tooling, and "environments"
                         | which can override config values as discussed above.
+
+
 
             div.row-fluid.marketing
                 div.span4
