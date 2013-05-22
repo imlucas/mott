@@ -69,6 +69,45 @@ html
                         | added a few things already and removed them because they're
                         | just better in make or bash.
 
+                    p
+                        | as little configuration to it as you want.
+                        pre
+                            code require('mott').starter().cli();
+                        | eventually you'll be down to
+                        pre
+                            code require('mott').cook(require('my-usual-setup')).cli();
+                        | and that one line of code will do all sorts of crazy things!
+                        | and you can manage it through package.json
+                        pre
+                            code
+                                | "dependencies": {
+                                |     "mott": "0.1.0",
+                                |     "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
+                                | }
+
+                    p
+                        | so, how does it all work?  the basic unit is a step,
+                        | say run browserify on some js files.  each step is
+                        | assumed to be async and is as simple as a name and
+                        | a callback.  the callback gets two arguments: a context, more on that later,
+                        | and a done callback.  a context is like a request object
+                        | in express.  its very thin api for a step to interact
+                        | with the rest of the world.  contexts are mutable.
+                        | other steps can pin on extra functionality (like dev server -> watch).
+                        | before a context is ever handed to a step, it's prepared;
+                        | globs are expanded to full paths, short hand options
+                        | are blown up to their full version, unicorns and bubblegums
+                        | rain from the heavens.  steps can then be bundled up
+                        | into tasks, to be run in parallel or run sequentially.
+
+                    p
+                        | (environments are wip) you can also specify different environments that override
+                        | config values (deploy to this S3 bucket for production,
+                        | and this one for staging).  steps can also as expected
+                        | easily do different things for different environments;
+                        | add sourcemaps to browserify'd files in development,
+                        | minfiy css for production.
+
             div.row-fluid.marketing
                 div.span4
                     h4 this site
