@@ -29,7 +29,12 @@ before a context is ever handed to a step, it's prepared;
 globs are expanded to full paths, short hand options
 are blown up to their full version, unicorns and bubblegums
 rain from the heavens.  steps can then be bundled up
-into tasks, to be run in parallel or run sequentially.</p><p>(environments are wip) you can also specify different environments that override
+into tasks, to be run in parallel or run sequentially.
+tasks and steps can be packaged up into nice little
+recipes; use requirejs and sass for this client,
+less and browserify and dust.js for this other guy,
+this one should be a phonegap app, etc, etc.</p><p>tpl (which really, really needs another name) is the
+runtime configuration</p><p>(environments are wip) you can also specify different environments that override
 config values (deploy to this S3 bucket for production,
 and this one for staging).  steps can also as expected
 easily do different things for different environments;
