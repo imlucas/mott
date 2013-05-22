@@ -1,60 +1,51 @@
 html
     head
-        title mott - get things done.
+        title mott - build faster.
         link(href="app.css", rel="stylesheet")
     body
 
+
     div.container-narrow
 
-        div.masthead
-            ul.nav.nav-pills.pull-right
-                li
-                    a(href="#")
-                        small Home
-                li
-                    a(href="#")
-                        small About
-                li
-                    a(href="#")
-                        small Contact
-        h3.muted mott
+        div.wrap
 
-        hr
-
-        div.jumbotron
-            h1 mott
-            p.lead
-                | Build stuff faster.
-            a.btn.btn-large(href="#") github
-
-        hr
-
-        div.row-fluid.marketing
-            div.span12
-                h2 start
-                pre
-                    code mkdir myapp && npm install -g mott && mott
-
-                p Have a look at the generated code in `mott.js`
-
-                p This site is built using mott.
-
-        hr
-
-        div.row-fluid.marketing
-            div.span12
-                h2 cookbook
-                p
-                    | The cookbook ties everything together.
-                    | Because you could have multiple apps running at once,
-                    | the cookbook handles making a single view of the world for
-                    | for you.
-
-
-                h2 recipes
+            div.jumbotron
+                h1 mott
+                p.lead
+                    | build faster.
 
                 p
-                    | Oh recipes...
+                    | more than just a static site generator
+
+            div.row-fluid.marketing
+                div.span12
+                    h2 start
+                    pre
+                        code mkdir myapp && npm install -g git://github.com/imlucas/mott.git && mott
+
+                    :markdown
+
+                        Have a look at the generated code in the generated `mott.js` file.
+                        This site is built using mott.
+
+
+            div.row-fluid.marketing
+                div.span4
+                    h4 This site
+                    p Simple jade templates, less, and bootstrap
+
+                div.span4
+                    h4 Phonegap
+                    p Less, browserify, and cordova
+
+                div.span3
+                    h4 HMmm
+                    p Dont know yet
+
+
+
+
+
 
     script(src="socket.io/socket.io.js")
     script(src="app.js")
