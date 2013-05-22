@@ -13,30 +13,71 @@ boilerplate and the configuration of that boilerplate.
 mott works great when used with make, grunt, jake, or
 any of the other make improvements.  i've actually
 added a few things already and removed them because they're
-just better in make or bash.</p><p>as little configuration to it as you want.<pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to<pre><code>require('mott').cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of crazy things!
-and you can manage it through package.json<pre><code>"dependencies": {
+just better in make or bash.</p><p>as little configuration to it as you want.<pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to<pre><code>require('mott')
+.cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of
+crazy things!
+and you can manage it through package.json!<pre><code>"dependencies": {
     "mott": "0.1.0",
     "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
-}</code></pre></p><p>so, how does it all work?  the basic unit is a step,
+}</code></pre></p><p>so, how does it all work?
+it may sound like a lot, but it's really not.
+the amount of code here is really reall tiny.
+it just provides an environment to play in.
+almost all of the action happens in steps.
+the basic unit is a step,
 say run browserify on some js files.  each step is
 assumed to be async and is as simple as a name and
-a callback.  the callback gets two arguments: a context, more on that later,
-and a done callback.  a context is like a request object
+a callback.  the callback gets two arguments: a
+context, more on that later,
+and a done callback.
+i've already written some, in lib/tasks, which should
+be renamed lib/steps,
+to take care of my workflow.  these should probably
+be moved out of the main package but i digress.
+a context is like a request
+object
 in express.  its very thin api for a step to interact
 with the rest of the world.  contexts are mutable.
-other steps can pin on extra functionality (like dev server -> watch).
-before a context is ever handed to a step, it's prepared;
+other steps can pin on extra functionality (like dev
+server -> watch).
+before a context is ever handed to a step,
+it's prepared;
 globs are expanded to full paths, short hand options
-are blown up to their full version, unicorns and bubblegums
+are blown up to their full version, unicorns
+and bubblegums
 rain from the heavens.  steps can then be bundled up
-into tasks, to be run in parallel or run sequentially.
+into tasks, to be run in parallel or run
+sequentially.
 tasks and steps can be packaged up into nice little
 recipes; use requirejs and sass for this client,
 less and browserify and dust.js for this other guy,
 this one should be a phonegap app, etc, etc.</p><p>tpl (which really, really needs another name) is the
-runtime configuration</p><p>(environments are wip) you can also specify different environments that override
-config values (deploy to this S3 bucket for production,
-and this one for staging).  steps can also as expected
-easily do different things for different environments;
-add sourcemaps to browserify'd files in development,
-minfiy css for production.</p></div></div><div class="row-fluid marketing"><div class="span4"><h4>this site</h4><p>Simple jade templates, less, and bootstrap</p></div><div class="span4"><h4>phonegap</h4><p>less, browserify, and cordova</p></div><div class="span3"><h4>hmmm</h4><p>dont know yet</p></div></div></div></div><script src="socket.io/socket.io.js"></script><script src="app.js"></script></html>
+runtime configuration for a recipe.  the tpl is what
+a context is originally built from.  your tpl is what
+specifies the tooling configuration for project;
+copy these png's from node_modules
+(node_modules/my-app-design-aseets/**/*.png)
+and put them in /images/$1/$2.png (see what i did
+there?), run js/main.js through browserify and spit
+that out as app.js, all simple things you could do
+in the makes.</p><p>(environments are wip) you can also specify
+different environments that override
+config values (deploy to this S3 bucket for
+production, and this one for staging).  steps can
+also as expected easily do different things for
+different environments; add sourcemaps to
+browserify'd files in development,
+minfiy css for production.</p><p>cookbooks bring it all together and are an api for
+working with your project (note: a project could
+have many apps, ie mobile web and phonegap ios and
+chrome package app.  i like modularization a lot,
+but you shouldn't have to use it for all your
+apps. a common folder is the best sometimes.)
+cookbook.exec() will run a task with some options,
+cookbook.cli() will run as a cli.</p><p>you start up a cookbook by providing it "apps"
+(should these be refactored to recipes? thats
+what they are.  configured instances of recipes.)
+that define how your project should be tooled,
+"config" which are values you want accessible in
+your app code and/or your tooling, and "environments"
+which can override config values as discussed above.</p></div></div><div class="row-fluid marketing"><div class="span4"><h4>this site</h4><p>Simple jade templates, less, and bootstrap</p></div><div class="span4"><h4>phonegap</h4><p>less, browserify, and cordova</p></div><div class="span3"><h4>hmmm</h4><p>dont know yet</p></div></div></div></div><script src="socket.io/socket.io.js"></script><script src="app.js"></script></html>
