@@ -20,6 +20,7 @@ html
             div.row-fluid.marketing
                 div.span12
                     h2 start
+
                     pre
                         code mkdir myapp && npm install -g git://github.com/imlucas/mott.git && mott
 
@@ -28,24 +29,36 @@ html
                         Have a look at the generated code in the generated `mott.js` file.
                         This site is built using mott.
 
+                    p
+                        | mott was originally created to help build the exfm phonegap
+                        | app.  it started out as a dozen or so grunt.js tasks.
+                        | after open sourcing it, i realized there was a lot about
+                        | that code that stunk; too fragile, too coupled to the
+                        | exfm architecture, not reusable.  It could do more.
+
+                    p
+                        | originally i didn't want mott.  i justed wanted something
+                        | that fit my work flow.  after months of bending other tools,
+                        | i took some time to tear the original code down and
+                        | figure out what it was i actually wanted.
+
+                    ul
+                        li reuse amazing modules
+                        li make the configuration as reusable as any other module
+
 
             div.row-fluid.marketing
                 div.span4
-                    h4 This site
+                    h4 this site
                     p Simple jade templates, less, and bootstrap
 
                 div.span4
-                    h4 Phonegap
-                    p Less, browserify, and cordova
+                    h4 phonegap
+                    p less, browserify, and cordova
 
                 div.span3
-                    h4 HMmm
-                    p Dont know yet
-
-
-
-
-
+                    h4 hmmm
+                    p dont know yet
 
     script(src="socket.io/socket.io.js")
     script(src="app.js")
