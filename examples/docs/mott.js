@@ -11,7 +11,7 @@ var mott = require('../../'),
 // or just ask me @__lucas.  Thanks for trying this out.
 
 var cookbook = new mott.Cookbook({
-    'apps': {
+    'recipes': {
         'web': recipe.configure({
             'js': {
                 // Add a main.js file and use browserify

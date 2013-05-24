@@ -33,20 +33,7 @@ var recipe = mott()
 
     .task('run', ['build', 'run', 'watch'])
 
-    .task('deploy', ['build', 'build appcache', 'deploy to github'])
-
-    .transform('js', function(ctx, resource, done){
-        if(ctx.environment !== 'production'){
-            return done();
-        }
-        // minify(resource, done);
-    })
-    .transform('less', function(ctx, resource, done){
-        if(ctx.appName !== 'web'){
-            return done();
-        }
-        // make CSS images absolute
-    });
+    .task('deploy', ['build', 'build appcache', 'deploy to github']);
 
 
 new Cookbook({
