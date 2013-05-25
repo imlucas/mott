@@ -53,4 +53,21 @@ describe("Recipe", function(){
         );
         assert.deepEqual(r.providesMetadata, {'include': {'index.jade': 'index.html'}});
     });
+
+    it("should have config copied into cookbook", function(){
+        var cookbook = new Recipe().use(
+            new Recipe().provide('config', {'hello': 'world'})
+        ).configure().cook();
+
+        assert.deepEqual(cookbook.config, {'hello': 'world'});
+    });
+
+    it("should be able to override config", function(){
+        var cookbook = new Recipe().use(
+            new Recipe().provide('config', {'hello': 'world'})
+        ).configure({}, {'hello': 'baz'}).cook();
+
+        assert.deepEqual(cookbook.config, {'hello': 'baz'});
+    });
+
 });
