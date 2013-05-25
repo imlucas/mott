@@ -24,4 +24,17 @@ describe("Recipe", function(){
 
         assert.deepEqual(r.tasks, {"empty":[{"steps":["t"],"mode":"sequential"}]});
     });
+
+    it("should be able to provide config", function(){
+        var r = new Recipe()
+            .provide('config', {'hello': 'world'});
+        assert.deepEqual(r.providesConfig, {'hello': 'world'});
+    });
+
+    it("should be able to provide extra metadata", function(){
+        var r = new Recipe()
+            .provide('metadata', {'include': {'index.jade': 'index.html'}});
+
+        assert.deepEqual(r.providesMetadata, {'include': {'index.jade': 'index.html'}});
+    });
 });
