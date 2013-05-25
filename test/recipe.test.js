@@ -1,6 +1,7 @@
 "use strict";
 
-var assert = require('assert');
+var assert = require('assert'),
+    util = require('util');
 
 var Recipe = require('../lib/recipe');
 
@@ -36,5 +37,11 @@ describe("Recipe", function(){
             .provide('metadata', {'include': {'index.jade': 'index.html'}});
 
         assert.deepEqual(r.providesMetadata, {'include': {'index.jade': 'index.html'}});
+    });
+
+    it("should return a recipe in the oven after calling configure", function(){
+        var r = new Recipe(),
+            i = r.configure();
+        assert.equal(i.constructor.name, 'RecipeInTheOven');
     });
 });
