@@ -44,4 +44,13 @@ describe("Recipe", function(){
             i = r.configure();
         assert.equal(i.constructor.name, 'RecipeInTheOven');
     });
+
+    it("should mixin config and metadata from another recipe", function(){
+        var r = new Recipe();
+        r.use(new Recipe()
+            .provide('config', {'hello': 'world'})
+            .provide('metadata', {'include': {'index.jade': 'index.html'}})
+        );
+        assert.deepEqual(r.providesMetadata, {'include': {'index.jade': 'index.html'}});
+    });
 });
