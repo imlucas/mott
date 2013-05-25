@@ -70,4 +70,12 @@ describe("Recipe", function(){
         assert.deepEqual(cookbook.config, {'hello': 'baz'});
     });
 
+    it("should copy steps and tasks", function(){
+        var otherRecipe = new Recipe().step('build', emptyStep).task('build task', ['build']),
+            r = new Recipe().use(otherRecipe);
+
+        assert.deepEqual(r.steps, otherRecipe.steps);
+        assert.deepEqual(r.tasks, otherRecipe.tasks);
+    });
+
 });
