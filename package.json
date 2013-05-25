@@ -42,7 +42,8 @@
     "async": "~0.2.8",
     "fs-extra": "~0.6.1",
     "markdown-js": "0.0.3",
-    "socket.io": "~0.9.14"
+    "socket.io": "~0.9.14",
+    "debug": "~0.7.2"
   },
   "devDependencies": {
     "mocha": "1.8.1"
