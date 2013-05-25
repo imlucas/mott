@@ -10,7 +10,7 @@ describe("Recipe", function(){
                 cb();
             },
             r = new Recipe()
-                .register('t', func);
+                .step('t', func);
 
         assert.deepEqual(r.steps, {'t': [func]});
     });
