@@ -26,14 +26,6 @@ module.exports = function(name){
     });
 };
 
-// package.json
-// {
-//   "name": "mott-recipe-lucas-single-page-app",
-//   "version": "0.0.1",
-//   "dependencies": {
-//     "twitter-bootstrap": "git://github.com/twitter/bootstrap.git"
-//   }
-// }
 //
 // I would like my mott file to look like:
 // require('mott')
