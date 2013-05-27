@@ -43,12 +43,12 @@ var cookbook = new mott.Cookbook({
 
 
 // You can add custom steps for your process like deploying to github pages
-recipe.register('deploy to github', mott.tasks['deploy-to-github']);
+recipe.step('deploy to github', mott.tasks['deploy-to-github']);
 // And then combine steps or other tasks into hand command line calls
 recipe.task('deploy', ['build', 'deploy to github']);
 
 
-recipe.register('fix bootstrap css paths', function(ctx, done){
+recipe.step('fix bootstrap css paths', function(ctx, done){
     var async = require('async'),
         fs = require('fs');
 
