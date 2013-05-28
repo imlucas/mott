@@ -71,7 +71,7 @@ process.chdir = function (dir) {
     "api_key": "123",
     "url": "http://localhost:8080",
     "environment": "production"
-}
+};
 })(require("__browserify_process"))
 },{"__browserify_process":3}],4:[function(require,module,exports){
 var Handlebars = require('handlebars-runtime');
