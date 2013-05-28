@@ -1,5 +1,7 @@
 "use strict";
 
+require('./config.js');
+
 var socket = io.connect("http://localhost:8080");
 socket.on("change", function(data){
     console.log("Got change from server.");
