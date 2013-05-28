@@ -15,7 +15,14 @@ var cookbook = new mott.Cookbook({
         'web': recipe.configure({
             'js': {
                 // Add a main.js file and use browserify
-                './main.js': 'app.js'
+                './main.js': {
+                    'dest': 'app.js',
+                    'templating': {
+                        'engine': 'handlebars',
+                        'partials': [],
+                        'helpers': []
+                    }
+                }
             },
             'less': {
                 // LESS your heart out.
