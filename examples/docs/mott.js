@@ -36,6 +36,7 @@ var cookbook = new mott.Cookbook({
         // Specify config values like so.
         'api_key': '123',
         'my_special_key': 'secret',
+        'url': 'http://localhost:8080',
         // Specify what config values should be available on the front end.
         'export': ['api_key']
     }
