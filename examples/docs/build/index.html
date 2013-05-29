@@ -1,98 +1,190 @@
-<html><head><title>mott - build faster.</title><link href="app.css" rel="stylesheet"/></head><body></body><div class="container-narrow"><div class="wrap"><div class="jumbotron"><h1>mott</h1><p class="lead">build faster.</p><p>more than just a static site generator
-write small functions (steps).
-group steps if you'd like (tasks).
-add config and post on github (recipe).
-make cool shit (mott).
-wait. cordova has recipes? (txjs 2011 talk https://github.com/brianleroux/Cordova/tree/58804a21e285e1a9eb4411c06392aa117f20dfec/cordova)</p></div><div class="row-fluid marketing"><div class="span12"><h2>start</h2><pre><code>mkdir myapp && npm install -g git://github.com/imlucas/mott.git && mott</code></pre><p>Have a look at the generated code in the generated <code>mott.js</code> file.
-This site is built using mott.</p><p>mott was originally created to help build the exfm phonegap
-app.  it started out as a dozen or so grunt.js tasks.
-after open sourcing it, i realized there was a lot about
-that code that stunk; too fragile, too coupled to the
-exfm architecture, not reusable.  It could do more.</p><p>originally i didn't want mott.  i justed wanted something
-that fit my work flow.  after months of bending other tools,
-i took some time to tear the original code down and
-figure out what it was i actually wanted.</p><ul><li>reuse amazing modules</li><li>make the configuration as reusable as any other module</li></ul><p>the features i originally wanted</p><ul><li>browserify to simplify dependecy management</li><li>robust client side templating</li><li>`lang.json` support</li><li>compress design assets</li><li>incremental deploys to S3</li><li>smoke test before deploying with `PhantomJS`</li><li>helpers for debugging, particularly on mobile (`weinre`, `chrome debugger`)</li><li>rebuild/reload on change</li></ul><p>the point here is not just to create make in javascript.
-there are plenty of solutions that already do that.
-the raison d'etre of mott is to modularize the
-boilerplate and the configuration of that boilerplate.
-mott works great when used with make, grunt, jake, or
-any of the other make improvements.  i've actually
-added a few things already and removed them because they're
-just better in make or bash.</p><p>as little configuration to it as you want.<pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to<pre><code>require('mott')
-.cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of
-crazy things!
-and you can manage it through package.json!<pre><code>"dependencies": {
-    "mott": "0.1.0",
-    "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
-}</code></pre></p><p>so, how does it all work?
-it may sound like a lot, but it's really not.
-the amount of code here is really reall tiny.
-it just provides an environment to play in.
-almost all of the action happens in steps.
-the basic unit is a step,
-say run browserify on some js files.  each step is
-assumed to be async and is as simple as a name and
-a callback.  the callback gets two arguments: a
-context, more on that later,
-and a done callback.
-i've already written some, in lib/tasks, which should
-be renamed lib/steps,
-to take care of my workflow.  these should probably
-be moved out of the main package but i digress.
-a context is like a request
-object
-in express.  its very thin api for a step to interact
-with the rest of the world.  contexts are mutable.
-other steps can pin on extra functionality (like dev
-server -> watch).
-before a context is ever handed to a step,
-it's prepared;
-globs are expanded to full paths, short hand options
-are blown up to their full version, unicorns
-and bubblegums
-rain from the heavens.  steps can then be bundled up
-into tasks, to be run in parallel or run
-sequentially.
-tasks and steps can be packaged up into nice little
-recipes; use requirejs and sass for this client,
-less and browserify and dust.js for this other guy,
-this one should be a phonegap app, etc, etc.</p><p>tpl (which really, really needs another name) is the
-runtime configuration for a recipe.  the tpl is what
-a context is originally built from.  your tpl is what
-specifies the tooling configuration for project;
-copy these png's from node_modules
-(node_modules/my-app-design-aseets/**/*.png)
-and put them in /images/$1/$2.png (see what i did
-there?), run js/main.js through browserify and spit
-that out as app.js, all simple things you could do
-in the makes.  steps and recipes can also modify
-tpl (which really, really needs another name) to
-abstract away more tooling configuration; copy
-the bootstrap glyphs to build/img/, compile
-posts/*.jade templates and put them in build/post/$1,
-create permalinks in S3 website configuration
-for all of my blog posts, etc.</p><p>(environments are wip) you can also specify
-different environments that override
-config values (deploy to this S3 bucket for
-production, and this one for staging).  steps can
-also as expected easily do different things for
-different environments; add sourcemaps to
-browserify'd files in development,
-minfiy css for production.</p><p>cookbooks bring it all together and are an api for
-working with your project (note: a project could
-have many apps, ie mobile web and phonegap ios and
-chrome package app.  i like modularization a lot,
-but you shouldn't have to use it for all your
-apps. a common folder is the best sometimes.)
-cookbook.exec() will run a task with some options,
-cookbook.cli() will run as a cli.</p><p>you start up a cookbook by providing it "apps"
-(should these be refactored to recipes? thats
-what they are.  configured instances of recipes.)
-that define how your project should be tooled,
-"config" which are values you want accessible in
-your app code and/or your tooling, and "environments"
-which can override config values as discussed above.</p><p>write small functions (steps).
-group steps if you'd like (tasks).
-add config and post on github (recipe).
-make cool shit (mott).</p><p>when you find a way to make cool shit faster,
-drop it on all the cool shit you already have.</p></div></div><div class="row-fluid marketing"><div class="span4"><h4>this site</h4><p>Simple jade templates, less, and bootstrap</p></div><div class="span4"><h4>phonegap</h4><p>less, browserify, and cordova</p></div><div class="span3"><h4>hmmm</h4><p>dont know yet</p></div></div></div></div><script src="socket.io/socket.io.js"></script><script src="app.js"></script></html>
+
+<html>
+  <head>
+    <title>mott - build faster.</title>
+    <link href="app.css" rel="stylesheet"/>
+  </head>
+  <body></body>
+  <div class="container-narrow">
+    <div class="wrap">
+      <div class="jumbotron">
+        <h1>mott</h1>
+        <p class="lead">build faster.</p>
+        <p>
+          more than just a static site generator
+          write small functions (steps).
+          group steps if you'd like (tasks).
+          add config and post on github (recipe).
+          make cool shit (mott).
+          wait. cordova has recipes? (txjs 2011 talk https://github.com/brianleroux/Cordova/tree/58804a21e285e1a9eb4411c06392aa117f20dfec/cordova)
+        </p>
+      </div>
+      <div class="row-fluid marketing">
+        <div class="span12">
+          <h2>start</h2>
+          <pre><code>mkdir myapp && npm install -g git://github.com/imlucas/mott.git && mott</code></pre><p>Have a look at the generated code in the generated <code>mott.js</code> file.
+This site is built using mott.</p>
+          <p>
+            mott was originally created to help build the exfm phonegap
+            app.  it started out as a dozen or so grunt.js tasks.
+            after open sourcing it, i realized there was a lot about
+            that code that stunk; too fragile, too coupled to the
+            exfm architecture, not reusable.  It could do more.
+          </p>
+          <p>
+            originally i didn't want mott.  i justed wanted something
+            that fit my work flow.  after months of bending other tools,
+            i took some time to tear the original code down and
+            figure out what it was i actually wanted.
+          </p>
+          <ul>
+            <li>reuse amazing modules</li>
+            <li>make the configuration as reusable as any other module</li>
+          </ul>
+          <p>the features i originally wanted</p>
+          <ul>
+            <li>browserify to simplify dependecy management</li>
+            <li>robust client side templating</li>
+            <li>`lang.json` support</li>
+            <li>compress design assets</li>
+            <li>incremental deploys to S3</li>
+            <li>smoke test before deploying with `PhantomJS`</li>
+            <li>helpers for debugging, particularly on mobile (`weinre`, `chrome debugger`)</li>
+            <li>rebuild/reload on change</li>
+          </ul>
+          <p>
+            the point here is not just to create make in javascript.
+            there are plenty of solutions that already do that.
+            the raison d'etre of mott is to modularize the
+            boilerplate and the configuration of that boilerplate.
+            mott works great when used with make, grunt, jake, or
+            any of the other make improvements.  i've actually
+            added a few things already and removed them because they're
+            just better in make or bash.
+          </p>
+          <p>as little configuration to it as you want.
+            <pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to
+            <pre><code>
+                require('mott')
+                .cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of
+            crazy things!
+            and you can manage it through package.json!
+            <pre><code>
+                "dependencies": {
+                    "mott": "0.1.0",
+                    "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
+                }</code></pre>
+          </p>
+          <p>
+            so, how does it all work?
+            it may sound like a lot, but it's really not.
+            the amount of code here is really reall tiny.
+            it just provides an environment to play in.
+            almost all of the action happens in steps.
+            the basic unit is a step,
+            say run browserify on some js files.  each step is
+            assumed to be async and is as simple as a name and
+            a callback.  the callback gets two arguments: a
+            context, more on that later,
+            and a done callback.
+            i've already written some, in lib/tasks, which should
+            be renamed lib/steps,
+            to take care of my workflow.  these should probably
+            be moved out of the main package but i digress.
+            a context is like a request
+            object
+            in express.  its very thin api for a step to interact
+            with the rest of the world.  contexts are mutable.
+            other steps can pin on extra functionality (like dev
+            server -> watch).
+            before a context is ever handed to a step,
+            it's prepared;
+            globs are expanded to full paths, short hand options
+            are blown up to their full version, unicorns
+            and bubblegums
+            rain from the heavens.  steps can then be bundled up
+            into tasks, to be run in parallel or run
+            sequentially.
+            tasks and steps can be packaged up into nice little
+            recipes; use requirejs and sass for this client,
+            less and browserify and dust.js for this other guy,
+            this one should be a phonegap app, etc, etc.
+          </p>
+          <p>
+            tpl (which really, really needs another name) is the
+            runtime configuration for a recipe.  the tpl is what
+            a context is originally built from.  your tpl is what
+            specifies the tooling configuration for project;
+            copy these png's from node_modules
+            (node_modules/my-app-design-aseets/**/*.png)
+            and put them in /images/$1/$2.png (see what i did
+            there?), run js/main.js through browserify and spit
+            that out as app.js, all simple things you could do
+            in the makes.  steps and recipes can also modify
+            tpl (which really, really needs another name) to
+            abstract away more tooling configuration; copy
+            the bootstrap glyphs to build/img/, compile
+            posts/*.jade templates and put them in build/post/$1,
+            create permalinks in S3 website configuration
+            for all of my blog posts, etc.
+          </p>
+          <p>
+            (environments are wip) you can also specify
+            different environments that override
+            config values (deploy to this S3 bucket for
+            production, and this one for staging).  steps can
+            also as expected easily do different things for
+            different environments; add sourcemaps to
+            browserify'd files in development,
+            minfiy css for production.
+          </p>
+          <p>
+            cookbooks bring it all together and are an api for
+            working with your project (note: a project could
+            have many apps, ie mobile web and phonegap ios and
+            chrome package app.  i like modularization a lot,
+            but you shouldn't have to use it for all your
+            apps. a common folder is the best sometimes.)
+            cookbook.exec() will run a task with some options,
+            cookbook.cli() will run as a cli.
+          </p>
+          <p>
+            you start up a cookbook by providing it "apps"
+            (should these be refactored to recipes? thats
+            what they are.  configured instances of recipes.)
+            that define how your project should be tooled,
+            "config" which are values you want accessible in
+            your app code and/or your tooling, and "environments"
+            which can override config values as discussed above.
+          </p>
+          <p>
+            write small functions (steps).
+            group steps if you'd like (tasks).
+            add config and post on github (recipe).
+            make cool shit (mott).
+          </p>
+          <p>
+            when you find a way to make cool shit faster,
+            drop it on all the cool shit you already have.
+          </p>
+        </div>
+      </div>
+      <div class="row-fluid marketing">
+        <div class="span4">
+          <h4>this site</h4>
+          <p>Simple jade templates, less, and bootstrap</p>
+        </div>
+        <div class="span4">
+          <h4>phonegap</h4>
+          <p>less, browserify, and cordova</p>
+        </div>
+        <div class="span3">
+          <h4>hmmm</h4>
+          <p>dont know yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</html>
