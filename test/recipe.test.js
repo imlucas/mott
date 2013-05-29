@@ -10,20 +10,11 @@ var emptyStep = function(ctx, cb){
 };
 
 describe("Recipe", function(){
-    it("should register a step", function(){
-        var r = new Recipe()
-                .step('t', emptyStep);
-
-        assert.deepEqual(r.steps, {'t': [emptyStep]});
-    });
-
     it("should register a task", function(){
         var r = new Recipe()
-            .step('t', emptyStep)
-            .task('empty', 't');
+            .task('empty', emptyStep);
 
-
-        assert.deepEqual(r.tasks, {"empty":[{"steps":["t"],"mode":"sequential"}]});
+        assert.deepEqual(r.tasks, {"empty":[{"steps":[emptyStep],"mode":"sequential"}]});
     });
 
     it("should be able to provide config", function(){
@@ -71,10 +62,9 @@ describe("Recipe", function(){
     });
 
     it("should copy steps and tasks", function(){
-        var otherRecipe = new Recipe().step('build', emptyStep).task('build task', ['build']),
+        var otherRecipe = new Recipe().task('build task', [emptyStep]),
             r = new Recipe().use(otherRecipe);
 
-        assert.deepEqual(r.steps, otherRecipe.steps);
         assert.deepEqual(r.tasks, otherRecipe.tasks);
     });
 
