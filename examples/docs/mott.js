@@ -44,24 +44,20 @@ var cookbook = new mott.Cookbook({
         'api_key': '123',
         'my_special_key': 'secret',
         'url': 'http://localhost:8080',
+        'deploy': 'github',
 
         // Specify what config values should be available on the front end.
         'export': ['api_key', 'url']
     }
 });
 
-
-// You can add custom steps for your process like deploying to github pages
-
-// recipe.step('deploy to s3', require('../../lib/tasks/deploy-to-s3.js'));
-
 // And then combine steps or other tasks into hand command line calls
 recipe.task('deploy', ['build', function(ctx, done){
     if(ctx.config.deploy === 'github'){
-        require('../../lib/tasks/deploy-to-github.js')(ctx, done);
+        mott.steps['deploy to github'](ctx, done);
     }
     else if(ctx.config.deploy.indexOf('s3://') > -1){
-        require('../../lib/tasks/deploy-to-s3.js')(ctx, done);
+        mott.steps['deploy to s3'](ctx, done);
     }
     else{
         done(new Error('htf do i deploy: ' + ctx.config.deploy + '?'));
