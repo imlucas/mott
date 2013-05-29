@@ -4,21 +4,6 @@
 var mott = require('../../lib'),
     Cookbook = mott.Cookbook;
 
-// function deployAllToS3(ctx, done){
-//     var Glob = require('glob').Glob,
-//         async = require('async'),
-//         files = [];
-
-//     new Glob('build/**', {'match': true}, function(err, matches){
-//         async.map(matches, getFileInfo, function(err, results){
-//             results = results.filter(function(stat){
-//                 return stat.isFile();
-//             });
-//             done();
-//         });
-//     });
-// }
-
 var recipe = mott()
     .register('less', require('../../lib/tasks/less'))
     .register('js', require('../../lib/tasks/browserify'))
