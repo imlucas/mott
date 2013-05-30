@@ -54,11 +54,13 @@ describe("Recipe", function(){
     });
 
     it("should be able to override config", function(){
-        var cookbook = new Recipe().use(
-            new Recipe().provide('config', {'hello': 'world'})
-        ).configure({}, {'hello': 'baz'}).cook();
+        var r = new Recipe().use(
+                new Recipe().provide('config', {'hello': 'world'})
+            ).configure({}, {'hello': 'baz'}, {});
 
-        assert.deepEqual(cookbook.config, {'hello': 'baz'});
+        assert.deepEqual(r.recipe.providesEnvironments, {});
+        assert.deepEqual(r.recipe.providesMetadata, {});
+        assert.deepEqual(r.recipe.providesConfig, {'hello': 'baz'});
     });
 
     it("should copy steps and tasks", function(){
