@@ -28,7 +28,8 @@ cd "$PROJECT_PATH"
 # security unlock-keychain -p $USER ~/Library/Keychains/login.keychain
 
 xcodebuild -project $PROJECT_NAME.xcodeproj \
-    -arch i386 -target $PROJECT_NAME \
+    -arch i386 \
+    -target $PROJECT_NAME \
     -configuration Release \
     -sdk $SDK clean build \
     VALID_ARCHS="i386" \
@@ -36,5 +37,5 @@ xcodebuild -project $PROJECT_NAME.xcodeproj \
 
 xcrun -sdk iphoneos PackageApplication -v $APP \
     -o $PWD/$APP.$VERSION.ipa \
-    --embed $PWD/$APP.dSYM > /dev/null
+    -embed $PWD/$APP.dSYM
 
