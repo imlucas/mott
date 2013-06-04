@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
-var mott = require('../');
+var mott = require('../'),
+    fs = require('fs-extra');
 
-mott.quickstart();
+// mott.quickstart();
+
+// Parse package
+fs.readJson('./package.json', console.log);
