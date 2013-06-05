@@ -35,5 +35,5 @@ fs.readJson('./package.json', function(err, data){
             recipe.task(key, mott.resolve(data.mott.recipe[key]));
         }
     }
-    recipe.cli(metadata, {}, environments);
+    recipe.cli(metadata, environments);
 });

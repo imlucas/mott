@@ -17,12 +17,6 @@ describe("Recipe", function(){
         assert.deepEqual(r.tasks, {"empty":[{"steps":[emptyStep],"mode":"sequential"}]});
     });
 
-    it("should be able to provide config", function(){
-        var r = new Recipe()
-            .provide('config', {'hello': 'world'});
-        assert.deepEqual(r.providesConfig, {'hello': 'world'});
-    });
-
     it("should be able to provide extra metadata", function(){
         var r = new Recipe()
             .provide('metadata', {'include': {'index.jade': 'index.html'}});
@@ -36,32 +30,31 @@ describe("Recipe", function(){
         assert.equal(i.constructor.name, 'RecipeInTheOven');
     });
 
-    it("should mixin config and metadata from another recipe", function(){
+    it("should mixin metadata from another recipe", function(){
         var r = new Recipe();
         r.use(new Recipe()
-            .provide('config', {'hello': 'world'})
             .provide('metadata', {'include': {'index.jade': 'index.html'}})
         );
         assert.deepEqual(r.providesMetadata, {'include': {'index.jade': 'index.html'}});
     });
 
-    it("should have config copied into cookbook", function(){
-        var cookbook = new Recipe().use(
-            new Recipe().provide('config', {'hello': 'world'})
-        ).configure().cook();
+    // it("should have metadata copied into cookbook", function(){
+    //     var cookbook = new Recipe().use(
+    //         new Recipe().provide('metadata', {'hello': 'world'})
+    //     ).configure().cook();
 
-        assert.deepEqual(cookbook.config, {'hello': 'world'});
-    });
+    //     assert.deepEqual(cookbook.config, {'hello': 'world'});
+    // });
 
-    it("should be able to override config", function(){
-        var r = new Recipe().use(
-                new Recipe().provide('config', {'hello': 'world'})
-            ).configure({}, {'hello': 'baz'}, {});
+    // it("should be able to override config", function(){
+    //     var r = new Recipe().use(
+    //             new Recipe().provide('config', {'hello': 'world'})
+    //         ).configure({}, {'hello': 'baz'}, {});
 
-        assert.deepEqual(r.recipe.providesEnvironments, {});
-        assert.deepEqual(r.recipe.providesMetadata, {});
-        assert.deepEqual(r.recipe.providesConfig, {'hello': 'baz'});
-    });
+    //     assert.deepEqual(r.recipe.providesEnvironments, {});
+    //     assert.deepEqual(r.recipe.providesMetadata, {});
+    //     assert.deepEqual(r.recipe.providesConfig, {'hello': 'baz'});
+    // });
 
     it("should copy steps and tasks", function(){
         var otherRecipe = new Recipe().task('build task', [emptyStep]),
