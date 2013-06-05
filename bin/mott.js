@@ -28,7 +28,10 @@ if(argv._[0] === 'new'){
             },
             'mott': {
                 'recipe': {
+                    'build': ["js", "less", "pages"],
+                    'run': ["build", "dev server", "watch"],
                     'metadata': {
+                        'deploy': 'github',
                         'export config': ['url']
                     }
                 },
@@ -38,7 +41,7 @@ if(argv._[0] === 'new'){
                 'production': {}
             }
         };
-        async.series([
+        async.parallel([
             function mkdir(callback){
                 fs.mkdirs('./' + name, callback);
                 ctx.baseDir = path.resolve('./' + name);
@@ -47,10 +50,12 @@ if(argv._[0] === 'new'){
                 fs.writeFile('./' + name + '/package.json',
                     JSON.stringify(ctx.packageJson, null, 4), callback);
             },
-            function npmInstall(callback){
-                child_process.exec('npm link mott', {'cwd': ctx.baseDir}, callback);
+            function makeFile(callback){
+                fs.copy(__dirname + '/../assets/Makefile.tpl', ctx.path('Makefile'), callback);
             }
-        ], done);
+        ], function(){
+            child_process.exec('npm link mott', {'cwd': ctx.baseDir}, done);
+        });
     });
     _uses.map(function(_use){
         // @todo (lucas) npm install
