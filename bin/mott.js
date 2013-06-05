@@ -31,6 +31,9 @@ if(argv._[0] === 'new'){
                     'build': ["js", "less", "pages"],
                     'run': ["build", "dev server", "watch"],
                     'metadata': {
+                        "includes": {
+                            "./index.html": "index.html"
+                        },
                         'deploy': 'github',
                         'export config': ['url']
                     }
@@ -42,16 +45,19 @@ if(argv._[0] === 'new'){
             }
         };
         async.parallel([
-            function mkdir(callback){
+            function (callback){
                 fs.mkdirs('./' + name, callback);
                 ctx.baseDir = path.resolve('./' + name);
             },
-            function writePackageJson(callback){
+            function (callback){
                 fs.writeFile('./' + name + '/package.json',
                     JSON.stringify(ctx.packageJson, null, 4), callback);
             },
-            function makeFile(callback){
+            function (callback){
                 fs.copy(__dirname + '/../assets/Makefile.tpl', ctx.path('Makefile'), callback);
+            },
+            function (callback){
+                fs.copy(__dirname + '/../assets/index.html.tpl', ctx.path('index.html'), callback);
             }
         ], function(){
             child_process.exec('npm link mott', {'cwd': ctx.baseDir}, done);
