@@ -8,7 +8,6 @@ var mott = require('../'),
 
 
 if(argv._[0] === 'new'){
-    console.log(argv);
     var path = require('path'),
         async = require('async'),
         child_process = require('child_process'),
