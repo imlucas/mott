@@ -48,7 +48,7 @@ if(argv._[0] === 'new'){
                     JSON.stringify(ctx.packageJson, null, 4), callback);
             },
             function npmInstall(callback){
-                child_process.exec('npm install', {'cwd': ctx.baseDir}, callback);
+                child_process.exec('npm link mott', {'cwd': ctx.baseDir}, callback);
             }
         ], done);
     });
