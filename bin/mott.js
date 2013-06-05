@@ -9,16 +9,54 @@ var mott = require('../'),
 
 if(argv._[0] === 'new'){
     console.log(argv);
-    var recipe = mott();
+    var path = require('path'),
+        async = require('async'),
+        child_process = require('child_process'),
+        recipe = mott(),
+        name = argv._[1],
+        _uses = ((Array.isArray(argv.use) ? argv.use : (argv.use) ? [argv.use] : []));
 
-    ((Array.isArray(argv.use) ? argv.use : [argv.use]) || []).map(function(_use){
+    recipe.task('new', function(ctx, done){
+        ctx.projectName = name;
+        ctx.packageJson = {
+            'name': name,
+            'version': '0.0.0',
+            'dependencies': {},
+            'devDependencies': {
+                'mott': 'git://github.com/imlucas/mott.git'
+                // @todo (lucas) include anything from uses
+            },
+            'mott': {
+                'recipe': {
+                    'metadata': {
+                        'export config': ['url']
+                    }
+                },
+                'development': {
+                    'url': 'http://localhost:8080'
+                },
+                'production': {}
+            }
+        };
+        async.series([
+            function mkdir(callback){
+                fs.mkdirs('./' + name, callback);
+                ctx.baseDir = path.resolve('./' + name);
+            },
+            function writePackageJson(callback){
+                fs.writeFile('./' + name + '/package.json',
+                    JSON.stringify(ctx.packageJson, null, 4), callback);
+            },
+            function npmInstall(callback){
+                child_process.exec('npm install', {'cwd': ctx.baseDir}, callback);
+            }
+        ], done);
+    });
+    _uses.map(function(_use){
         // @todo (lucas) npm install
         recipe.use(mott.resolve(_use));
     });
-    recipe.task('new', function(ctx, done){
-        console.log('hi');
-        done();
-    });
+
     recipe.cook().exec('new', {}, function(err){
         console.log('done');
     });
