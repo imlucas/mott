@@ -30,6 +30,12 @@ if(argv._[0] === 'new'){
                     'build': ["js", "less", "pages"],
                     'run': ["build", "dev server", "watch"],
                     'metadata': {
+                        "js": {
+                            "./index.js": "index.js"
+                        },
+                        "less": {
+                            "./index.less": "index.css"
+                        },
                         "includes": {
                             "./index.html": "index.html"
                         },
@@ -57,6 +63,12 @@ if(argv._[0] === 'new'){
             },
             function (callback){
                 fs.copy(__dirname + '/../assets/index.html.tpl', ctx.path('index.html'), callback);
+            },
+            function (callback){
+                fs.copy(__dirname + '/../assets/index.js.tpl', ctx.path('index.js'), callback);
+            },
+            function (callback){
+                fs.copy(__dirname + '/../assets/index.less.tpl', ctx.path('index.less'), callback);
             }
         ], function(){
             child_process.exec('npm link mott', {'cwd': ctx.baseDir}, done);
