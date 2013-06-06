@@ -51,11 +51,14 @@ if(argv._[0] === 'new'){
         };
         async.parallel([
             function (callback){
+                if(!name){
+                    return callback();
+                }
                 fs.mkdirs('./' + name, callback);
                 ctx.baseDir = path.resolve('./' + name);
             },
             function (callback){
-                fs.writeFile('./' + name + '/package.json',
+                fs.writeFile(ctx.path('package.json'),
                     JSON.stringify(ctx.packageJson, null, 4), callback);
             },
             function (callback){
