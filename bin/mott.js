@@ -14,7 +14,7 @@ if(argv._[0] === 'new'){
         recipe = mott(),
         name = argv._[1],
         _uses = ((Array.isArray(argv.use) ? argv.use : (argv.use) ? [argv.use] : []));
-
+    // @todo (lucas) If no name, use cwd name.
     recipe.task('new', function(ctx, done){
         ctx.projectName = name;
         ctx.packageJson = {
