@@ -36,16 +36,10 @@ if(argv._[0] === 'new'){
                     'build': ["js", "less", "pages"],
                     'run': ["build", "dev server", "watch"],
                     'metadata': {
-                        "js": {
-                            "./index.js": "index.js"
-                        },
-                        "less": {
-                            "./index.less": "index.css"
-                        },
-                        "includes": {
-                            "./index.html": "index.html"
-                        },
-                        'deploy': 'github',
+                        "js": {},
+                        "less": {},
+                        "includes": {},
+                        'deploy': '',
                         'export config': ['url']
                     }
                 },
@@ -66,25 +60,34 @@ if(argv._[0] === 'new'){
             function (callback){
                 fs.writeFile(ctx.path('package.json'),
                     JSON.stringify(ctx.packageJson, null, 4), callback);
-            },
-            function (callback){
-                fs.copy(__dirname + '/../assets/Makefile.tpl', ctx.path('Makefile'), callback);
-            },
-            function (callback){
-                fs.copy(__dirname + '/../assets/index.html.tpl', ctx.path('index.html'), callback);
-            },
-            function (callback){
-                fs.copy(__dirname + '/../assets/index.js.tpl', ctx.path('index.js'), callback);
-            },
-            function (callback){
-                fs.copy(__dirname + '/../assets/index.less.tpl', ctx.path('index.less'), callback);
             }
         ], function(){
             child_process.exec('npm link mott', {'cwd': ctx.baseDir}, done);
         });
+
+        // @todo (lucas) Should be moved out to its own recipe.
+        // function (callback){
+        //     fs.copy(__dirname + '/../assets/Makefile.tpl', ctx.path('Makefile'), callback);
+        // },
+        // function (callback){
+        //     fs.copy(__dirname + '/../assets/index.html.tpl', ctx.path('index.html'), callback);
+        // },
+        // function (callback){
+        //     fs.copy(__dirname + '/../assets/index.js.tpl', ctx.path('index.js'), callback);
+        // },
+        // function (callback){
+        //     fs.copy(__dirname + '/../assets/index.less.tpl', ctx.path('index.less'), callback);
+        // }
     });
     _uses.map(function(_use){
         // @todo (lucas) npm install
+        if(_use.indexOf('https://') > -1){
+            _use = _use.replace('https://', 'git://');
+            if(_use.indexOf('.git') === -1){
+                _use = _use + '.git';
+            }
+        }
+
         recipe.use(mott.resolve(_use));
     });
 
