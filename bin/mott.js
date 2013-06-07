@@ -4,7 +4,8 @@
 
 var mott = require('../'),
     fs = require('fs-extra'),
-    argv = require('optimist').argv;
+    argv = require('optimist').argv,
+    path = require('path');
 
 
 if(argv._[0] === 'new'){
@@ -14,6 +15,11 @@ if(argv._[0] === 'new'){
         recipe = mott(),
         name = argv._[1],
         _uses = ((Array.isArray(argv.use) ? argv.use : (argv.use) ? [argv.use] : []));
+
+    if(!name){
+        var parts = path.resolve('./').split(path.sep);
+        name = parts[parts.length - 1];
+    }
     // @todo (lucas) If no name, use cwd name.
     recipe.task('new', function(ctx, done){
         ctx.projectName = name;
@@ -51,7 +57,7 @@ if(argv._[0] === 'new'){
         };
         async.parallel([
             function (callback){
-                if(!name){
+                if(!argv._[1]){
                     return callback();
                 }
                 fs.mkdirs('./' + name, callback);
