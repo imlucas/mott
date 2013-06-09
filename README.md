@@ -16,58 +16,6 @@ In the mean time, more info is available on the [Phonegap Blog](http://phonegap.
 
 ## Notes
 
-    // settings.json/private.json/local.json?
-    {
-        "development": {
-            ... default config
-        },
-        "beta": {
-            ... overrides for --env beta
-        },
-        "production": {
-            ... overrides for --env production
-        }
-    }
-
-    // add to package.json
-    // does deploy URI go in metadata or config?
-    "mott": {
-        "recipe": {
-            "build": ["js config", "js", "less"],
-            "run": ["build", "watch"],
-            "use": ["lucas-special-brew", "mr-cordova"],
-            "ipa": ["deploy to s3"],
-            "metadata": {
-                "js": {
-                    "./app/js/main.js": {
-                        "dest": "app.js",
-                        "templating": {
-                            "engine": "handlebars",
-                            "partials": [],
-                            "helpers": []
-                        }
-                    },
-                    "./app/js/sterno.js": "sterno.js"
-                },
-                "less": {
-                    "./app/less/main.less": "app.css",
-                    "./app/less/install.less": "install.css"
-                },
-                "config.js": "./app/config.js"
-            }
-        },
-        "development": {
-            "url": "http://localhost:8080"
-        },
-        "beta": {
-            "url": "http://beta.mysite.com"
-        },
-        "production": {
-           "url": "http://prod.mysite.com"
-        }
-    }
-
-
     // multiple recipes?
     "mott": {
         "recipes": [
