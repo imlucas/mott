@@ -1,8 +1,0 @@
-{
-  "name": "mr-lucas-singlepager",
-  "description": "Example recipe",
-  "version": "0.0.1",
-  "dependencies": {
-    "twitter-bootstrap": "git://github.com/twitter/bootstrap.git"
-  }
-}
