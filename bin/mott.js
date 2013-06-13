@@ -87,7 +87,6 @@ if(argv._[0] === 'new'){
                 _use = _use + '.git';
             }
         }
-
         recipe.use(mott.resolve(_use));
     });
 
