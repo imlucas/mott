@@ -14,6 +14,13 @@ In the mean time, more info is available on the [Phonegap Blog](http://phonegap.
 
  * exfm [web](http://assets.extension.fm) [ios](https://itunes.apple.com/us/app/exfm/id440394777?mt=8)
 
+## Features
+
+* deploy an opsworks stack
+* deploy to S3
+* deploy to github pages
+* build and run phongap apps
+
 ## Notes
 
     // multiple recipes?
