@@ -20,6 +20,12 @@ In the mean time, more info is available on the [Phonegap Blog](http://phonegap.
 * deploy to S3
 * deploy to github pages
 * build and run phongap apps
+* browserify
+* less
+* rebuild on change
+* build pages with jade
+* appcache
+* lang.json
 
 ## Notes
 
