@@ -11,7 +11,10 @@ try{
 }
 catch(e){
     mott = require(__dirname + '/../mott');
+    require.paths.push(path.resolve(__dirname + '/../mott/node_modules'));
 }
+
+console.log(require.paths);
 
 if(argv._[0] === 'new'){
     var path = require('path'),
