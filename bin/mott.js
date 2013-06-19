@@ -2,8 +2,6 @@
 
 "use strict";
 var mott,
-    fs = require('fs-extra'),
-    argv = require('optimist').argv,
     path = require('path');
 
 try{
@@ -14,6 +12,10 @@ catch(e){
 }
 require.paths.push(path.resolve(__dirname + '/../mott/node_modules'));
 console.error(require.paths);
+
+
+var fs = require('fs-extra'),
+    argv = require('optimist').argv;
 
 if(argv._[0] === 'new'){
     var path = require('path'),
