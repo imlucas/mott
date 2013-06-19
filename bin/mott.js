@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 
 "use strict";
-console.log(__dirname + '/../');
-var mott = require(__dirname + '/../'),
+var mott,
     fs = require('fs-extra'),
     argv = require('optimist').argv,
     path = require('path');
 
+try{
+    mott = require('../');
+}
+catch(e){
+    mott = require(__dirname + '/../mott');
+}
 
 if(argv._[0] === 'new'){
     var path = require('path'),
