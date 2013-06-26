@@ -63,4 +63,6 @@ describe("Recipe", function(){
         assert.deepEqual(r.tasks, otherRecipe.tasks);
     });
 
+    it("should actually mixin a package local config");
+
 });
