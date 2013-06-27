@@ -99,7 +99,7 @@ if(argv._[0] === 'new'){
 
 fs.readJson('./package.json', function(err, data){
     if(err){
-        console.log(err);
+        console.log('error reading package.json', err.stack);
         return;
     }
     var environments = {},
