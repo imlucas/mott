@@ -32,7 +32,8 @@
     "fs-extra": "0.6.1",
     "socket.io": "0.9.14",
     "debug": "0.7.2",
-    "plist": "0.4.3"
+    "plist": "0.4.3",
+    "plog": "0.2.1"
   },
   "devDependencies": {
     "mocha": "1.8.1"
