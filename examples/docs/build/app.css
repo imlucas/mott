@@ -8873,13 +8873,20 @@ body {
 #sidebar-inner {
   padding: 5%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lucas\/projects\/exfm\/mott\/examples\/docs\/main\.less}line{font-family:\0000337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lucas\/projects\/exfm\/mott\/examples\/docs\/main\.less}line{font-family:\0000336}}
 #content {
-  overflow: auto;
-  max-height: 100%;
   padding-right: 5%;
+  padding-left: 5%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lucas\/projects\/exfm\/mott\/examples\/docs\/main\.less}line{font-family:\0000343}}
+@media (min-width: 767px) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lucas\/projects\/exfm\/mott\/examples\/docs\/main\.less}line{font-family:\0000343}}
+  #content {
+    padding-left: 0;
+    overflow: auto;
+    max-height: 100%;
+  }
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lucas\/projects\/exfm\/mott\/examples\/docs\/main\.less}line{font-family:\0000350}}
 .container {
   background: #FFFFFF;
   width: 100%;

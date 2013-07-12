@@ -33,13 +33,20 @@ body {
 #sidebar-inner {
     padding: 5%;
 }
-
 #content {
-    overflow: auto;
-    max-height: 100%;
     padding-right: 5%;
+    padding-left: 5%;
 }
 
+
+@media (min-width: 767px){
+    #content {
+        padding-left: 0;
+        overflow: auto;
+        max-height: 100%;
+
+    }
+}
 .container{
     background: #FFFFFF;
     width: 100%;
