@@ -16,26 +16,9 @@ html
 
                 p
                     | more than just a static site generator
-                    | write small functions (steps).
-                    | group steps if you'd like (tasks).
-                    | add config and post on github (recipe).
-                    | make cool shit (mott).
-                    | wait. cordova has recipes? (txjs 2011 talk https://github.com/brianleroux/Cordova/tree/58804a21e285e1a9eb4411c06392aa117f20dfec/cordova)
-                    | similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
-                    | so whats the difference between mott and all of those?
 
             div.row-fluid.marketing
                 div.span12
-                    h2 start
-
-                    pre
-                        code mkdir myapp && npm install -g git://github.com/imlucas/mott.git && mott
-
-                    :markdown
-
-                        Have a look at the generated code in the generated `mott.js` file.
-                        This site is built using mott.
-
                     p
                         | mott was originally created to help build the exfm phonegap
                         | app.  it started out as a dozen or so grunt.js tasks.
@@ -75,6 +58,9 @@ html
                         | any of the other make improvements.  i've actually
                         | added a few things already and removed them because they're
                         | just better in make or bash.
+                    p
+                        | similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
+                        | so whats the difference between mott and all of those?
 
                     p
                         | as little configuration to it as you want.
@@ -131,9 +117,9 @@ html
                         | this one should be a phonegap app, etc, etc.
 
                     p
-                        | tpl (which really, really needs another name) is the
-                        | runtime configuration for a recipe.  the tpl is what
-                        | a context is originally built from.  your tpl is what
+                        | metadata is the
+                        | runtime configuration for a recipe.  the metadata is what
+                        | a context is originally built from.  your metadata is what
                         | specifies the tooling configuration for project;
                         | copy these png's from node_modules
                         | (node_modules/my-app-design-aseets/**/*.png)
@@ -141,7 +127,7 @@ html
                         | there?), run js/main.js through browserify and spit
                         | that out as app.js, all simple things you could do
                         | in the makes.  steps and recipes can also modify
-                        | tpl (which really, really needs another name) to
+                        | metadata to
                         | abstract away more tooling configuration; copy
                         | the bootstrap glyphs to build/img/, compile
                         | posts/*.jade templates and put them in build/post/$1,
@@ -149,7 +135,7 @@ html
                         | for all of my blog posts, etc.
 
                     p
-                        | (environments are wip) you can also specify
+                        | you can also specify
                         | different environments that override
                         | config values (deploy to this S3 bucket for
                         | production, and this one for staging).  steps can
@@ -184,9 +170,6 @@ html
                         | add config and post on github (recipe).
                         | make cool shit (mott).
 
-                    p
-                        | when you find a way to make cool shit faster,
-                        | drop it on all the cool shit you already have.
 
             div.row-fluid.marketing
                 div.span4
