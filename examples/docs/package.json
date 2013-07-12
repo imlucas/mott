@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "mott run",
-    "dev": "DEBUG=mott:* mott run",
+    "run": "DEBUG=mott:* mott run",
     "deploy": "mott deploy --env beta"
   },
   "repository": {
