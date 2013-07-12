@@ -38,7 +38,7 @@ npm run-script deploy</pre>
       </div>
       <div class="row-fluid">
         <div class="span12">
-          <h2>Basic package.json</h2>
+          <h2>package.json</h2>
           <p>
             <pre><code></code>{
     "name": "my-app",
@@ -58,7 +58,16 @@ npm run-script deploy</pre>
     }
 }</pre>
           </p>
-          <h2>Why?</h2>
+          <h2>package-local.json
+            <pre><code></code>{
+    "mott": {
+        "production": {
+            "deploy": "s3://myaccessid:secretkey@bucketname/subkey"
+        }
+    }
+}</pre>
+          </h2>
+          <h2>About</h2>
           <p>
             mott was originally created to help build the exfm phonegap
             app.  it started out as a dozen or so grunt.js tasks.

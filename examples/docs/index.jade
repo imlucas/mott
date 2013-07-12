@@ -3,17 +3,12 @@ html
         title mott - build faster.
         link(href="app.css", rel="stylesheet")
     body
-
-
     div.container-narrow
-
         div.wrap
-
             div.jumbotron
                 h1 mott
                 p.lead
                     | build faster
-
                 p
                     | more than just a static site generator
 
@@ -43,7 +38,7 @@ html
 
             div.row-fluid
                 div.span12
-                    h2 Basic package.json
+                    h2 package.json
                     p
                         pre
                             code
@@ -65,7 +60,18 @@ html
                             |     }
                             | }
 
-                    h2 Why?
+                    h2 package-local.json
+                        pre
+                            code
+                            | {
+                            |     "mott": {
+                            |         "production": {
+                            |             "deploy": "s3://myaccessid:secretkey@bucketname/subkey"
+                            |         }
+                            |     }
+                            | }
+
+                    h2 About
                     p
                         | mott was originally created to help build the exfm phonegap
                         | app.  it started out as a dozen or so grunt.js tasks.
