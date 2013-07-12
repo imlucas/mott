@@ -13,21 +13,32 @@
         <p>more than just a static site generator</p>
       </div>
       <div class="row-fluid">
-        <div class="span6">
+        <div class="span12">
           <p>
-            <pre><code></code>npm install -g mott</pre>
-          </p>
-          <p>
-            <pre><code></code>mott new my-app</pre>
-          </p>
-          <p>
-            <pre><code></code>npm start</pre>
-          </p>
-          <p>
-            <pre><code></code>npm run-script deploy</pre>
+            <pre><code></code># install mott from npm
+npm install -g mott
+&nbsp;
+# initialize a new project
+mott new my-app
+&nbsp;
+cd my-app;
+# starts a local development server on localhost:8080
+npm start
+&nbsp;
+# setup repo
+git init
+git remote add origin https://github.com/your-username/my-app.git
+git add package.json
+git commit -m "Initial commit."
+&nbsp;
+# deploy to github pages
+npm run-script deploy</pre>
           </p>
         </div>
-        <div class="span6">
+      </div>
+      <div class="row-fluid">
+        <div class="span12">
+          <h2>Basic package.json</h2>
           <p>
             <pre><code></code>{
     "name": "my-app",
@@ -47,10 +58,7 @@
     }
 }</pre>
           </p>
-        </div>
-      </div>
-      <div class="row-fluid">
-        <div class="span12">
+          <h2>Why?</h2>
           <p>
             mott was originally created to help build the exfm phonegap
             app.  it started out as a dozen or so grunt.js tasks.
@@ -93,6 +101,7 @@
             similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
             so whats the difference between mott and all of those?
           </p>
+          <h2>How it works</h2>
           <p>
             so, how does it all work?
             it may sound like a lot, but it's really not.
@@ -127,6 +136,7 @@
             less and browserify and dust.js for this other guy,
             this one should be a phonegap app, etc, etc.
           </p>
+          <h2>metadata</h2>
           <p>
             metadata is the
             runtime configuration for a recipe.  the metadata is what
@@ -145,6 +155,7 @@
             create permalinks in S3 website configuration
             for all of my blog posts, etc.
           </p>
+          <h2>environments</h2>
           <p>
             you can also specify
             different environments that override
@@ -155,6 +166,7 @@
             browserify'd files in development,
             minfiy css for production.
           </p>
+          <h2>cookbooks</h2>
           <p>
             cookbooks bring it all together and are an api for
             working with your project (note: a project could

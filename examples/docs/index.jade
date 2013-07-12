@@ -18,29 +18,32 @@ html
                     | more than just a static site generator
 
             div.row-fluid
-
-                div.span6
+                div.span12
                     p
                         pre
                             code
+                            | # install mott from npm
                             | npm install -g mott
-
-                    p
-                        pre
-                            code
+                            | &nbsp;
+                            | # initialize a new project
                             | mott new my-app
-
-                    p
-                        pre
-                            code
+                            | &nbsp;
+                            | cd my-app;
+                            | # starts a local development server on localhost:8080
                             | npm start
-
-                    p
-                        pre
-                            code
+                            | &nbsp;
+                            | # setup repo
+                            | git init
+                            | git remote add origin https://github.com/your-username/my-app.git
+                            | git add package.json
+                            | git commit -m "Initial commit."
+                            | &nbsp;
+                            | # deploy to github pages
                             | npm run-script deploy
 
-                div.span6
+            div.row-fluid
+                div.span12
+                    h2 Basic package.json
                     p
                         pre
                             code
@@ -62,9 +65,7 @@ html
                             |     }
                             | }
 
-            div.row-fluid
-                div.span12
-
+                    h2 Why?
                     p
                         | mott was originally created to help build the exfm phonegap
                         | app.  it started out as a dozen or so grunt.js tasks.
@@ -108,6 +109,7 @@ html
                         | similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
                         | so whats the difference between mott and all of those?
 
+                    h2 How it works
                     p
                         | so, how does it all work?
                         | it may sound like a lot, but it's really not.
@@ -142,6 +144,7 @@ html
                         | less and browserify and dust.js for this other guy,
                         | this one should be a phonegap app, etc, etc.
 
+                    h2 metadata
                     p
                         | metadata is the
                         | runtime configuration for a recipe.  the metadata is what
@@ -160,6 +163,7 @@ html
                         | create permalinks in S3 website configuration
                         | for all of my blog posts, etc.
 
+                    h2 environments
                     p
                         | you can also specify
                         | different environments that override
@@ -170,6 +174,7 @@ html
                         | browserify'd files in development,
                         | minfiy css for production.
 
+                    h2 cookbooks
                     p
                         | cookbooks bring it all together and are an api for
                         | working with your project (note: a project could
