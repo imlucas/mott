@@ -40,6 +40,12 @@ npm run-script deploy</pre>
         <div class="span12">
           <h2>package.json</h2>
           <p>
+            so how does mott find out about all of this stuff?
+            the world doesnt need another configuration file or
+            format.  we already have a package.json file
+            and so mott just uses that.
+          </p>
+          <p>
             <pre><code></code>{
     "name": "my-app",
     "version": "0.0.0",
@@ -58,7 +64,44 @@ npm run-script deploy</pre>
     }
 }</pre>
           </p>
-          <h2>package-local.json
+          <p>
+            all keys specified in mott.recipe above are specific to
+            your application.  the special key mott.recipe.metadata
+            contains your setup, described in more detail below.
+            another special key is use, which allows you to specify
+            one of more recipes to inherit from.  all other keys
+            of mott.recipe.* are task declarations, which again you
+            can find more about below.
+          </p>
+          <p>
+            all keys specified in mott.*, excluding mott.recipe,
+            are environments you can create. for example
+          </p>
+          <p>
+            <pre><code></code>...
+"mott": {
+    "recipe": {
+        "use": "mott-starter"
+    },
+    "production": {
+       "url": "http://ex.fm",
+       "deploy": "s3://myaccessid:secretkey@bucketname/subkey"
+    }
+}
+...</pre>
+          </p>
+          <p>
+            so when you specify NODE_ENV or --env from the command line,
+            these values will override values in mott.recipe.metadata.
+          </p>
+          <h2>package-local.json</h2>
+          <p>
+            sometimes you have values you don't want to be checked in
+            to your repository;  for example, AWS API credentials.
+            for those types of cases, mott supports a package-local.json
+            file you can use to specify those values.
+          </p>
+          <p>
             <pre><code></code>{
     "mott": {
         "production": {
@@ -66,7 +109,7 @@ npm run-script deploy</pre>
         }
     }
 }</pre>
-          </h2>
+          </p>
           <h2>deploying with&nbsp;<a href="http://wercker.com">wercker</a></h2>
           <p></p>set up your repo as a wercker application and use the below
           as your wercker.yml
