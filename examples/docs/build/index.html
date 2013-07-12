@@ -67,6 +67,22 @@ npm run-script deploy</pre>
     }
 }</pre>
           </h2>
+          <h2>deploying with&nbsp;<a href="http://wercker.com">wercker</a></h2>
+          <p></p>set up your repo as a wercker application and use the below
+          as your wercker.yml
+          <p>
+            <pre><code></code># mott wercker.yml
+box: wercker/nodejs
+build:
+  steps:
+    - npm-install
+deploy:
+  steps:
+    -  script:
+        name: mott-deploy
+        code: |-
+          npm run-script deploy</pre>
+          </p>
           <h2>about</h2>
           <p>
             mott was originally created to help build the exfm phonegap
