@@ -92,6 +92,29 @@ html
                             |         code: |-
                             |           npm run-script deploy
 
+                    h2 versioning with&nbsp;
+                        a(href="http://github.com/imlucas/node-sterno.com") sterno
+
+                    p
+                    | sterno provides a simple way to manage versioning
+                    | for mobile deployments.  if appcache worked, sterno wouldn't
+                    | need to exist.  mott has a built-in step for generating
+                    | sterno bootstrap files.
+
+                    p
+                        pre
+                            code
+                            | ...
+                            | "mott": {
+                            |     "recipe": {
+                            |         "use": "mott-starter",
+                            |         "build": ["write bootstrap"]
+                            |     }
+                            | }
+                            | ...
+
+                    h2 adhoc steps
+
                     h2 about
                     p
                         | mott was originally created to help build the exfm phonegap
