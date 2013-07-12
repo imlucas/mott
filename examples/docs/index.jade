@@ -95,11 +95,10 @@ html
                     h2 versioning with&nbsp;
                         a(href="http://github.com/imlucas/node-sterno.com") sterno
 
-                    p
-                    | sterno provides a simple way to manage versioning
-                    | for mobile deployments.  if appcache worked, sterno wouldn't
-                    | need to exist.  mott has a built-in step for generating
-                    | sterno bootstrap files.
+                    p sterno provides a simple way to manage versioning
+                        | for mobile deployments.  if appcache worked, sterno wouldn't
+                        | need to exist.  mott has a built-in step for generating
+                        | sterno bootstrap files.
 
                     p
                         pre
@@ -114,6 +113,21 @@ html
                             | ...
 
                     h2 adhoc steps
+
+                    p a step does not have to be defined in a recipe to be used by your app.  you can just include a path to a script like&nbsp;
+                        a(href="https://github.com/imlucas/mott/blob/master/examples/docs/mott/fix-bootstrap-img-paths.js") this site does
+
+                    p
+                        pre
+                            code
+                            | ...
+                            | "mott": {
+                            |     "recipe": {
+                            |         "use": "mott-starter",
+                            |         "build": ["./mott/fix-bootstrap-img-paths.js"]
+                            |     }
+                            | }
+                            | ...
 
                     h2 about
                     p
