@@ -5,17 +5,26 @@
     <link href="app.css" rel="stylesheet"/>
   </head>
   <body></body>
-  <div class="container-narrow">
-    <div class="wrap">
-      <div class="jumbotron">
-        <h1>mott</h1>
-        <p class="lead">build faster</p>
-        <p>more than just a static site generator</p>
-      </div>
-      <div class="row-fluid">
-        <div class="span12">
+  <div class="container">
+    <div class="row-fluid">
+      <div id="sidebar" class="span3">
+        <div id="sidebar-inner">
+          <h1>mott</h1>
+          <p class="lead">build faster</p>
           <p>
-            <pre><code></code># install mott from npm
+            more than just a static site generator,
+            compose your applications and use all your
+            new found free-time on bespoke SOAP API's.
+          </p>
+          <iframe src="http://ghbtns.com/github-btn.html?user=imlucas&amp;repo=mott&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0"></iframe>
+        </div>
+      </div>
+      <div id="content" class="span9">
+        <div class="row-fluid">
+          <div class="span12">
+            <h2>getting started</h2>
+            <p>
+              <pre><code></code># install mott from npm
 npm install -g mott
 &nbsp;
 # initialize a new project
@@ -33,20 +42,20 @@ git commit -m "Initial commit."
 &nbsp;
 # deploy to github pages
 npm run-script deploy</pre>
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="row-fluid">
-        <div class="span12">
-          <h2>package.json</h2>
-          <p>
-            so how does mott find out about all of this stuff?
-            the world doesnt need another configuration file or
-            format.  we already have a package.json file
-            and so mott just uses that.
-          </p>
-          <p>
-            <pre><code></code>{
+        <div class="row-fluid">
+          <div class="span12">
+            <h2>package.json</h2>
+            <p>
+              so how does mott find out about all of this stuff?
+              the world doesnt need another configuration file or
+              format.  we already have a package.json file
+              and so mott just uses that.
+            </p>
+            <p>
+              <pre><code></code>{
     "name": "my-app",
     "version": "0.0.0",
     "scripts": {
@@ -63,22 +72,22 @@ npm run-script deploy</pre>
         }
     }
 }</pre>
-          </p>
-          <p>
-            all keys specified in mott.recipe above are specific to
-            your application.  the special key mott.recipe.metadata
-            contains your setup, described in more detail below.
-            another special key is use, which allows you to specify
-            one of more recipes to inherit from.  all other keys
-            of mott.recipe.* are task declarations, which again you
-            can find more about below.
-          </p>
-          <p>
-            all keys specified in mott.*, excluding mott.recipe,
-            are environments you can create. for example
-          </p>
-          <p>
-            <pre><code></code>...
+            </p>
+            <p>
+              all keys specified in mott.recipe above are specific to
+              your application.  the special key mott.recipe.metadata
+              contains your setup, described in more detail below.
+              another special key is use, which allows you to specify
+              one of more recipes to inherit from.  all other keys
+              of mott.recipe.* are task declarations, which again you
+              can find more about below.
+            </p>
+            <p>
+              all keys specified in mott.*, excluding mott.recipe,
+              are environments you can create. for example
+            </p>
+            <p>
+              <pre><code></code>...
 "mott": {
     "recipe": {
         "use": "mott-starter"
@@ -89,32 +98,32 @@ npm run-script deploy</pre>
     }
 }
 ...</pre>
-          </p>
-          <p>
-            so when you specify NODE_ENV or --env from the command line,
-            these values will override values in mott.recipe.metadata.
-          </p>
-          <h2>package-local.json</h2>
-          <p>
-            sometimes you have values you don't want to be checked in
-            to your repository;  for example, AWS API credentials.
-            for those types of cases, mott supports a package-local.json
-            file you can use to specify those values.
-          </p>
-          <p>
-            <pre><code></code>{
+            </p>
+            <p>
+              so when you specify NODE_ENV or --env from the command line,
+              these values will override values in mott.recipe.metadata.
+            </p>
+            <h2>package-local.json</h2>
+            <p>
+              sometimes you have values you don't want to be checked in
+              to your repository;  for example, AWS API credentials.
+              for those types of cases, mott supports a package-local.json
+              file you can use to specify those values.
+            </p>
+            <p>
+              <pre><code></code>{
     "mott": {
         "production": {
             "deploy": "s3://myaccessid:secretkey@bucketname/subkey"
         }
     }
 }</pre>
-          </p>
-          <h2>deploying with&nbsp;<a href="http://wercker.com">wercker</a></h2>
-          <p></p>set up your repo as a wercker application and use the below
-          as your wercker.yml
-          <p>
-            <pre><code></code># mott wercker.yml
+            </p>
+            <h2>deploying with&nbsp;<a href="http://wercker.com">wercker</a></h2>
+            <p></p>set up your repo as a wercker application and use the below
+            as your wercker.yml
+            <p>
+              <pre><code></code># mott wercker.yml
 box: wercker/nodejs
 build:
   steps:
@@ -125,16 +134,16 @@ deploy:
         name: mott-deploy
         code: |-
           npm run-script deploy</pre>
-          </p>
-          <h2>versioning with&nbsp;<a href="http://github.com/imlucas/node-sterno.com">sterno</a></h2>
-          <p>
-            sterno provides a simple way to manage versioning
-            for mobile deployments.  if appcache worked, sterno wouldn't
-            need to exist.  mott has a built-in step for generating
-            sterno bootstrap files.
-          </p>
-          <p>
-            <pre><code></code>...
+            </p>
+            <h2>versioning with&nbsp;<a href="http://github.com/imlucas/node-sterno.com">sterno</a></h2>
+            <p>
+              sterno provides a simple way to manage versioning
+              for mobile deployments.  if appcache worked, sterno wouldn't
+              need to exist.  mott has a built-in step for generating
+              sterno bootstrap files.
+            </p>
+            <p>
+              <pre><code></code>...
 "mott": {
     "recipe": {
         "use": "mott-starter",
@@ -142,11 +151,11 @@ deploy:
     }
 }
 ...</pre>
-          </p>
-          <h2>adhoc steps</h2>
-          <p>a step does not have to be defined in a recipe to be used by your app.  you can just include a path to a script like&nbsp;<a href="https://github.com/imlucas/mott/blob/master/examples/docs/mott/fix-bootstrap-img-paths.js">this site does</a></p>
-          <p>
-            <pre><code></code>...
+            </p>
+            <h2>adhoc steps</h2>
+            <p>a step does not have to be defined in a recipe to be used by your app.  you can just include a path to a script like&nbsp;<a href="https://github.com/imlucas/mott/blob/master/examples/docs/mott/fix-bootstrap-img-paths.js">this site does</a></p>
+            <p>
+              <pre><code></code>...
 "mott": {
     "recipe": {
         "use": "mott-starter",
@@ -154,91 +163,91 @@ deploy:
     }
 }
 ...</pre>
-          </p>
-          <h2>about</h2>
-          <p>
-            mott was originally created to help build the exfm phonegap
-            app.  it started out as a dozen or so grunt.js tasks.
-            after open sourcing it, i realized there was a lot about
-            that code that stunk; too fragile, too coupled to the
-            exfm architecture, not reusable.  It could do more.
-          </p>
-          <p>
-            originally i didn't want mott.  i justed wanted something
-            that fit my work flow.  after months of bending other tools,
-            i took some time to tear the original code down and
-            figure out what it was i actually wanted.
-          </p>
-          <ul>
-            <li>reuse amazing modules</li>
-            <li>make the configuration as reusable as any other module</li>
-            <li>composable configuration</li>
-          </ul>
-          <p>the features i originally wanted</p>
-          <ul>
-            <li>browserify to simplify dependecy management</li>
-            <li>robust client side templating</li>
-            <li>`lang.json` support</li>
-            <li>compress design assets</li>
-            <li>incremental deploys to S3</li>
-            <li>smoke test before deploying with `PhantomJS`</li>
-            <li>helpers for debugging, particularly on mobile (`weinre`, `chrome debugger`)</li>
-            <li>rebuild/reload on change</li>
-          </ul>
-          <p>
-            the point here is not just to create make in javascript.
-            there are plenty of solutions that already do that.
-            the raison d'etre of mott is to modularize the
-            boilerplate and the configuration of that boilerplate.
-            mott works great when used with make, grunt, jake, or
-            any of the other make improvements.  i've actually
-            added a few things already and removed them because they're
-            just better in make or bash.
-          </p>
-          <p>
-            similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
-            so whats the difference between mott and all of those?
-          </p>
-          <h2>the works</h2>
-          <p>
-            so, how does it all work?
-            it may sound like a lot, but it's really not.
-            the amount of code here is really reall tiny.
-            it just provides an environment to play in.
-            almost all of the action happens in steps.
-            the basic unit is a step,
-            say run browserify on some js files.  each step is
-            assumed to be async and is as simple as a name and
-            a callback.  the callback gets two arguments: a
-            context, more on that later,
-            and a done callback.
-          </p>
-          <p>
-            i've already written some, in lib/steps
-            to take care of my workflow.  these should probably
-            be moved out of the main package but i digress.
-            steps can then be bundled up
-            into tasks.
-            tasks and steps can be packaged up into nice little
-            recipes; use requirejs and sass for this client,
-            less and browserify and dust.js for this other guy,
-            this one should be a phonegap app, etc, etc.
-          </p>
-          <h3>recipe.metadata</h3>
-          <p>
-            metadata is the
-            runtime configuration for a recipe.
-            your metadata is what
-            specifies the tooling configuration for project.
-            for example, to tell mott
-            copy these png's from node_modules
-            (node_modules/my-app-design-aseets/**/*.png)
-            and put them in /images/$1/$2.png (see what i did
-            there?), run js/main.js through browserify and spit
-            that out as app.js you would want metadata like
-          </p>
-          <p>
-            <pre><code></code>{
+            </p>
+            <h2>about</h2>
+            <p>
+              mott was originally created to help build the exfm phonegap
+              app.  it started out as a dozen or so grunt.js tasks.
+              after open sourcing it, i realized there was a lot about
+              that code that stunk; too fragile, too coupled to the
+              exfm architecture, not reusable.  It could do more.
+            </p>
+            <p>
+              originally i didn't want mott.  i justed wanted something
+              that fit my work flow.  after months of bending other tools,
+              i took some time to tear the original code down and
+              figure out what it was i actually wanted.
+            </p>
+            <ul>
+              <li>reuse amazing modules</li>
+              <li>make the configuration as reusable as any other module</li>
+              <li>composable configuration</li>
+            </ul>
+            <p>the features i originally wanted</p>
+            <ul>
+              <li>browserify to simplify dependecy management</li>
+              <li>robust client side templating</li>
+              <li>`lang.json` support</li>
+              <li>compress design assets</li>
+              <li>incremental deploys to S3</li>
+              <li>smoke test before deploying with `PhantomJS`</li>
+              <li>helpers for debugging, particularly on mobile (`weinre`, `chrome debugger`)</li>
+              <li>rebuild/reload on change</li>
+            </ul>
+            <p>
+              the point here is not just to create make in javascript.
+              there are plenty of solutions that already do that.
+              the raison d'etre of mott is to modularize the
+              boilerplate and the configuration of that boilerplate.
+              mott works great when used with make, grunt, jake, or
+              any of the other make improvements.  i've actually
+              added a few things already and removed them because they're
+              just better in make or bash.
+            </p>
+            <p>
+              similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
+              so whats the difference between mott and all of those?
+            </p>
+            <h2>the works</h2>
+            <p>
+              so, how does it all work?
+              it may sound like a lot, but it's really not.
+              the amount of code here is really reall tiny.
+              it just provides an environment to play in.
+              almost all of the action happens in steps.
+              the basic unit is a step,
+              say run browserify on some js files.  each step is
+              assumed to be async and is as simple as a name and
+              a callback.  the callback gets two arguments: a
+              context, more on that later,
+              and a done callback.
+            </p>
+            <p>
+              i've already written some, in lib/steps
+              to take care of my workflow.  these should probably
+              be moved out of the main package but i digress.
+              steps can then be bundled up
+              into tasks.
+              tasks and steps can be packaged up into nice little
+              recipes; use requirejs and sass for this client,
+              less and browserify and dust.js for this other guy,
+              this one should be a phonegap app, etc, etc.
+            </p>
+            <h3>recipe.metadata</h3>
+            <p>
+              metadata is the
+              runtime configuration for a recipe.
+              your metadata is what
+              specifies the tooling configuration for project.
+              for example, to tell mott
+              copy these png's from node_modules
+              (node_modules/my-app-design-aseets/**/*.png)
+              and put them in /images/$1/$2.png (see what i did
+              there?), run js/main.js through browserify and spit
+              that out as app.js you would want metadata like
+            </p>
+            <p>
+              <pre><code></code>{
     ...
     "mott": {
         "recipe": {
@@ -254,60 +263,48 @@ deploy:
     }
     ...
 }</pre>
-          </p>
-          <h3>recipe.environments</h3>
-          <p>
-            you can also specify
-            different environments that override
-            config values (deploy to this S3 bucket for
-            production, and this one for staging).  steps can
-            also as expected easily do different things for
-            different environments; add sourcemaps to
-            browserify'd files in development,
-            minfiy css for production.
-          </p>
-          <h3>recipe.cookbook</h3>
-          <p>
-            cookbooks bring it all together and are an api for
-            working with your project (note: a project could
-            have many recipes, ie mobile web and phonegap ios and
-            chrome package app.  i like modularization a lot,
-            but you shouldn't have to use it for all your
-            recipes. a common folder is the best sometimes.)
-            cookbook.exec() will run a task with some options,
-            cookbook.cli() will run as a cli.
-          </p>
-          <p>
-            the cookbook prepares your metadata and environment
-            to create a context and takes care of things like
-            expanding globs you specify in your metadata.
-          </p>
-          <h3>recipe.ctx</h3>
-          <p>
-            environments override metadata to create a context.
-            the context is like a request object in express or
-            the env object if your coming from fabric and python.
-            ctx can be decorated with functions by recipes and steps.
-          </p>
-          <p>
-            ctx also contains a few helper functions that make
-            writing steps much easier.  you can find more
-            on that in the Context documentation.
-          </p>
-          <h2>api</h2>
-          <p>as little configuration to it as you want.
-            <pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to
-            <pre><code>
-                require('mott')
-                .cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of
-            crazy things!
-            and you can manage it through package.json!
-            <pre><code>
-                "dependencies": {
-                    "mott": "0.1.0",
-                    "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
-                }</code></pre>
-          </p>
+            </p>
+            <h3>recipe.environments</h3>
+            <p>
+              you can also specify
+              different environments that override
+              config values (deploy to this S3 bucket for
+              production, and this one for staging).  steps can
+              also as expected easily do different things for
+              different environments; add sourcemaps to
+              browserify'd files in development,
+              minfiy css for production.
+            </p>
+            <h3>recipe.cookbook</h3>
+            <p>
+              cookbooks bring it all together and are an api for
+              working with your project (note: a project could
+              have many recipes, ie mobile web and phonegap ios and
+              chrome package app.  i like modularization a lot,
+              but you shouldn't have to use it for all your
+              recipes. a common folder is the best sometimes.)
+              cookbook.exec() will run a task with some options,
+              cookbook.cli() will run as a cli.
+            </p>
+            <p>
+              the cookbook prepares your metadata and environment
+              to create a context and takes care of things like
+              expanding globs you specify in your metadata.
+            </p>
+            <h3>recipe.ctx</h3>
+            <p>
+              environments override metadata to create a context.
+              the context is like a request object in express or
+              the env object if your coming from fabric and python.
+              ctx can be decorated with functions by recipes and steps.
+            </p>
+            <p>
+              ctx also contains a few helper functions that make
+              writing steps much easier.  you can find more
+              on that in the Context documentation.
+            </p>
+            <h2>api</h2>
+          </div>
         </div>
       </div>
     </div>
