@@ -188,6 +188,7 @@ html
                     ul
                         li reuse amazing modules
                         li make the configuration as reusable as any other module
+                        li composable configuration
 
                     p
                         | the features i originally wanted
@@ -228,48 +229,52 @@ html
                         | a callback.  the callback gets two arguments: a
                         | context, more on that later,
                         | and a done callback.
-                        | i've already written some, in lib/tasks, which should
-                        | be renamed lib/steps,
+
+                    p
+                        | i've already written some, in lib/steps
                         | to take care of my workflow.  these should probably
                         | be moved out of the main package but i digress.
-                        | a context is like a request
-                        | object
-                        | in express.  its very thin api for a step to interact
-                        | with the rest of the world.  contexts are mutable.
-                        | other steps can pin on extra functionality (like dev
-                        | server -> watch).
-                        | before a context is ever handed to a step,
-                        | it's prepared;
-                        | globs are expanded to full paths, short hand options
-                        | are blown up to their full version, unicorns
-                        | and bubblegums
-                        | rain from the heavens.  steps can then be bundled up
+                        | steps can then be bundled up
                         | into tasks.
                         | tasks and steps can be packaged up into nice little
                         | recipes; use requirejs and sass for this client,
                         | less and browserify and dust.js for this other guy,
                         | this one should be a phonegap app, etc, etc.
 
-                    h2 metadata
+                    h3 recipe.metadata
                     p
                         | metadata is the
-                        | runtime configuration for a recipe.  the metadata is what
-                        | a context is originally built from.  your metadata is what
-                        | specifies the tooling configuration for project;
+                        | runtime configuration for a recipe.
+                        | your metadata is what
+                        | specifies the tooling configuration for project.
+                        | for example, to tell mott
                         | copy these png's from node_modules
                         | (node_modules/my-app-design-aseets/**/*.png)
                         | and put them in /images/$1/$2.png (see what i did
                         | there?), run js/main.js through browserify and spit
-                        | that out as app.js, all simple things you could do
-                        | in the makes.  steps and recipes can also modify
-                        | metadata to
-                        | abstract away more tooling configuration; copy
-                        | the bootstrap glyphs to build/img/, compile
-                        | posts/*.jade templates and put them in build/post/$1,
-                        | create permalinks in S3 website configuration
-                        | for all of my blog posts, etc.
+                        | that out as app.js you would want metadata like
 
-                    h2 environments
+                    p
+                        pre
+                            code
+                            | {
+                            |     ...
+                            |     "mott": {
+                            |         "recipe": {
+                            |             "metadata": {
+                            |                 "js": {
+                            |                     "./main.js": "./app.js"
+                            |                 },
+                            |                 "includes": {
+                            |                     "node_modules/bootstrap/img/*.png": "img/$1.png"
+                            |                 }
+                            |             }
+                            |         }
+                            |     }
+                            |     ...
+                            | }
+
+                    h3 recipe.environments
                     p
                         | you can also specify
                         | different environments that override
@@ -280,23 +285,36 @@ html
                         | browserify'd files in development,
                         | minfiy css for production.
 
-                    h2 cookbooks
+                    h3 recipe.cookbook
                     p
                         | cookbooks bring it all together and are an api for
                         | working with your project (note: a project could
-                        | have many apps, ie mobile web and phonegap ios and
+                        | have many recipes, ie mobile web and phonegap ios and
                         | chrome package app.  i like modularization a lot,
                         | but you shouldn't have to use it for all your
-                        | apps. a common folder is the best sometimes.)
+                        | recipes. a common folder is the best sometimes.)
                         | cookbook.exec() will run a task with some options,
                         | cookbook.cli() will run as a cli.
 
                     p
-                        | you start up a cookbook by providing it "recipes"
-                        | that define how your project should be tooled,
-                        | "config" which are values you want accessible in
-                        | your app code and/or your tooling, and "environments"
-                        | which can override config values as discussed above.
+                        | the cookbook prepares your metadata and environment
+                        | to create a context and takes care of things like
+                        | expanding globs you specify in your metadata.
+
+
+                    h3 recipe.ctx
+                    p
+                        | environments override metadata to create a context.
+                        | the context is like a request object in express or
+                        | the env object if your coming from fabric and python.
+                        | ctx can be decorated with functions by recipes and steps.
+
+                    p
+                        | ctx also contains a few helper functions that make
+                        | writing steps much easier.  you can find more
+                        | on that in the Context documentation.
+
+                    h2 api
 
                     p
                         | as little configuration to it as you want.
