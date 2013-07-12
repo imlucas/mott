@@ -12,7 +12,7 @@ html
             div.jumbotron
                 h1 mott
                 p.lead
-                    | build faster.
+                    | build faster
 
                 p
                     | more than just a static site generator
@@ -61,25 +61,6 @@ html
                     p
                         | similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
                         | so whats the difference between mott and all of those?
-
-                    p
-                        | as little configuration to it as you want.
-                        pre
-                            code require('mott').starter().cli();
-                        | eventually you'll be down to
-                        pre
-                            code require('mott')
-                                | .cook(require('my-usual-setup')).cli();
-
-                        | and that one line of code will do all sorts of
-                        | crazy things!
-                        | and you can manage it through package.json!
-                        pre
-                            code
-                                | "dependencies": {
-                                |     "mott": "0.1.0",
-                                |     "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
-                                | }
 
                     p
                         | so, how does it all work?
@@ -155,34 +136,31 @@ html
                         | cookbook.cli() will run as a cli.
 
                     p
-                        | you start up a cookbook by providing it "apps"
-                        | (should these be refactored to recipes? thats
-                        | what they are.  configured instances of recipes.)
+                        | you start up a cookbook by providing it "recipes"
                         | that define how your project should be tooled,
                         | "config" which are values you want accessible in
                         | your app code and/or your tooling, and "environments"
                         | which can override config values as discussed above.
 
-
                     p
-                        | write small functions (steps).
-                        | group steps if you'd like (tasks).
-                        | add config and post on github (recipe).
-                        | make cool shit (mott).
+                        | as little configuration to it as you want.
+                        pre
+                            code require('mott').starter().cli();
+                        | eventually you'll be down to
+                        pre
+                            code require('mott')
+                                | .cook(require('my-usual-setup')).cli();
 
+                        | and that one line of code will do all sorts of
+                        | crazy things!
+                        | and you can manage it through package.json!
+                        pre
+                            code
+                                | "dependencies": {
+                                |     "mott": "0.1.0",
+                                |     "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
+                                | }
 
-            div.row-fluid.marketing
-                div.span4
-                    h4 this site
-                    p Simple jade templates, less, and bootstrap
-
-                div.span4
-                    h4 phonegap
-                    p less, browserify, and cordova
-
-                div.span3
-                    h4 hmmm
-                    p dont know yet
 
     script(src="socket.io/socket.io.js")
     script(src="app.js")

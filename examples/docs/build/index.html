@@ -9,23 +9,11 @@
     <div class="wrap">
       <div class="jumbotron">
         <h1>mott</h1>
-        <p class="lead">build faster.</p>
-        <p>
-          more than just a static site generator
-          write small functions (steps).
-          group steps if you'd like (tasks).
-          add config and post on github (recipe).
-          make cool shit (mott).
-          wait. cordova has recipes? (txjs 2011 talk https://github.com/brianleroux/Cordova/tree/58804a21e285e1a9eb4411c06392aa117f20dfec/cordova)
-          similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
-          so whats the difference between mott and all of those?
-        </p>
+        <p class="lead">build faster</p>
+        <p>more than just a static site generator</p>
       </div>
       <div class="row-fluid marketing">
         <div class="span12">
-          <h2>start</h2>
-          <pre><code>mkdir myapp && npm install -g git://github.com/imlucas/mott.git && mott</code></pre><p>Have a look at the generated code in the generated <code>mott.js</code> file.
-This site is built using mott.</p>
           <p>
             mott was originally created to help build the exfm phonegap
             app.  it started out as a dozen or so grunt.js tasks.
@@ -64,18 +52,9 @@ This site is built using mott.</p>
             added a few things already and removed them because they're
             just better in make or bash.
           </p>
-          <p>as little configuration to it as you want.
-            <pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to
-            <pre><code>
-                require('mott')
-                .cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of
-            crazy things!
-            and you can manage it through package.json!
-            <pre><code>
-                "dependencies": {
-                    "mott": "0.1.0",
-                    "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
-                }</code></pre>
+          <p>
+            similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
+            so whats the difference between mott and all of those?
           </p>
           <p>
             so, how does it all work?
@@ -113,9 +92,9 @@ This site is built using mott.</p>
             this one should be a phonegap app, etc, etc.
           </p>
           <p>
-            tpl (which really, really needs another name) is the
-            runtime configuration for a recipe.  the tpl is what
-            a context is originally built from.  your tpl is what
+            metadata is the
+            runtime configuration for a recipe.  the metadata is what
+            a context is originally built from.  your metadata is what
             specifies the tooling configuration for project;
             copy these png's from node_modules
             (node_modules/my-app-design-aseets/**/*.png)
@@ -123,7 +102,7 @@ This site is built using mott.</p>
             there?), run js/main.js through browserify and spit
             that out as app.js, all simple things you could do
             in the makes.  steps and recipes can also modify
-            tpl (which really, really needs another name) to
+            metadata to
             abstract away more tooling configuration; copy
             the bootstrap glyphs to build/img/, compile
             posts/*.jade templates and put them in build/post/$1,
@@ -131,7 +110,7 @@ This site is built using mott.</p>
             for all of my blog posts, etc.
           </p>
           <p>
-            (environments are wip) you can also specify
+            you can also specify
             different environments that override
             config values (deploy to this S3 bucket for
             production, and this one for staging).  steps can
@@ -151,38 +130,25 @@ This site is built using mott.</p>
             cookbook.cli() will run as a cli.
           </p>
           <p>
-            you start up a cookbook by providing it "apps"
-            (should these be refactored to recipes? thats
-            what they are.  configured instances of recipes.)
+            you start up a cookbook by providing it "recipes"
             that define how your project should be tooled,
             "config" which are values you want accessible in
             your app code and/or your tooling, and "environments"
             which can override config values as discussed above.
           </p>
-          <p>
-            write small functions (steps).
-            group steps if you'd like (tasks).
-            add config and post on github (recipe).
-            make cool shit (mott).
+          <p>as little configuration to it as you want.
+            <pre><code>require('mott').starter().cli();</code></pre>eventually you'll be down to
+            <pre><code>
+                require('mott')
+                .cook(require('my-usual-setup')).cli();</code></pre>and that one line of code will do all sorts of
+            crazy things!
+            and you can manage it through package.json!
+            <pre><code>
+                "dependencies": {
+                    "mott": "0.1.0",
+                    "my-usual-setup": "git://github.com/imlucas/mott-my-usual-setup.git"
+                }</code></pre>
           </p>
-          <p>
-            when you find a way to make cool shit faster,
-            drop it on all the cool shit you already have.
-          </p>
-        </div>
-      </div>
-      <div class="row-fluid marketing">
-        <div class="span4">
-          <h4>this site</h4>
-          <p>Simple jade templates, less, and bootstrap</p>
-        </div>
-        <div class="span4">
-          <h4>phonegap</h4>
-          <p>less, browserify, and cordova</p>
-        </div>
-        <div class="span3">
-          <h4>hmmm</h4>
-          <p>dont know yet</p>
         </div>
       </div>
     </div>
