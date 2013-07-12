@@ -2,14 +2,38 @@
   "name": "mott-docs",
   "version": "0.0.0",
   "scripts": {
-    "start": "./mott.js run",
-    "dev": "DEBUG=mott:* ./mott.js run",
-    "deploy-prod": "./mott.js deploy --env production",
-    "deploy": "./mott.js deploy --env beta"
+    "start": "mott run",
+    "dev": "DEBUG=mott:* mott run",
+    "deploy": "mott deploy --env beta"
   },
-  "repository": "",
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/imlucas/mott.git"
+  },
+  "author": "Lucas Hrabovsky<hrabovsky.lucas@gmail.com>",
   "dependencies": {
     "twitter-bootstrap": "git://github.com/twitter/bootstrap.git"
+  },
+  "mott": {
+    "recipe": {
+      "build": ["js", "less", "pages", "./mott/fix-bootstrap-img-paths.js"],
+      "deploy": ["build", "deploy to github"],
+      "run": ["build", "dev server", "watch"],
+      "metadata": {
+        "js": {
+          "./main.js": "./app.js"
+        },
+        "less": {
+          "./main.less": "./app.css"
+        },
+        "pages": {
+          "./index.jade": "index.html",
+          "./pages/*.jade": "$1.html"
+        },
+        "includes": {
+            "node_modules/bootstrap/img/*.png": "img/$1.png"
+        }
+      }
+    }
   }
 }
