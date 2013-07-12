@@ -18,11 +18,32 @@ html
                     | more than just a static site generator
 
             div.row-fluid
+
                 div.span6
                     p
                         pre
                             code
-                            | package.json
+                            | npm install -g mott
+
+                    p
+                        pre
+                            code
+                            | mott new my-app
+
+                    p
+                        pre
+                            code
+                            | npm start
+
+                    p
+                        pre
+                            code
+                            | npm run-script deploy
+
+                div.span6
+                    p
+                        pre
+                            code
                             | {
                             |     "name": "my-app",
                             |     "version": "0.0.0",
@@ -40,16 +61,7 @@ html
                             |         }
                             |     }
                             | }
-                div.span6
-                    p
-                        pre
-                            code
-                            | npm start
 
-                    p
-                        pre
-                            code
-                            | npm run-script deploy
             div.row-fluid
                 div.span12
 
