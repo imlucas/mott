@@ -17,8 +17,42 @@ html
                 p
                     | more than just a static site generator
 
-            div.row-fluid.marketing
+            div.row-fluid
+                div.span6
+                    p
+                        pre
+                            code
+                            | package.json
+                            | {
+                            |     "name": "my-app",
+                            |     "version": "0.0.0",
+                            |     "scripts": {
+                            |         "start": "DEBUG=mott:* ./node_modules/.bin/mott run",
+                            |         "deploy": "DEBUG=mott:* ./node_modules/.bin/mott deploy"
+                            |     }
+                            |     "dependencies": {
+                            |         "mott": "0.1.0",
+                            |         "mott-starter": "0.0.1"
+                            |     },
+                            |     "mott": {
+                            |         "recipe": {
+                            |             "use": "mott-starter"
+                            |         }
+                            |     }
+                            | }
+                div.span6
+                    p
+                        pre
+                            code
+                            | npm start
+
+                    p
+                        pre
+                            code
+                            | npm run-script deploy
+            div.row-fluid
                 div.span12
+
                     p
                         | mott was originally created to help build the exfm phonegap
                         | app.  it started out as a dozen or so grunt.js tasks.

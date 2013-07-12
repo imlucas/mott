@@ -12,7 +12,39 @@
         <p class="lead">build faster</p>
         <p>more than just a static site generator</p>
       </div>
-      <div class="row-fluid marketing">
+      <div class="row-fluid">
+        <div class="span6">
+          <p>
+            <pre><code></code>package.json
+{
+    "name": "my-app",
+    "version": "0.0.0",
+    "scripts": {
+        "start": "DEBUG=mott:* ./node_modules/.bin/mott run",
+        "deploy": "DEBUG=mott:* ./node_modules/.bin/mott deploy"
+    }
+    "dependencies": {
+        "mott": "0.1.0",
+        "mott-starter": "0.0.1"
+    },
+    "mott": {
+        "recipe": {
+            "use": "mott-starter"
+        }
+    }
+}</pre>
+          </p>
+        </div>
+        <div class="span6">
+          <p>
+            <pre><code></code>npm start</pre>
+          </p>
+          <p>
+            <pre><code></code>npm run-script deploy</pre>
+          </p>
+        </div>
+      </div>
+      <div class="row-fluid">
         <div class="span12">
           <p>
             mott was originally created to help build the exfm phonegap
