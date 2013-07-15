@@ -1,6 +1,8 @@
 # mott
 
-[![Build Status](https://secure.travis-ci.org/imlucas/mott.png)](http://travis-ci.org/imlucas/mott)
+<div id="build-status">
+    <a href="http://travis-ci.org/imlucas/mott"><img src="https://secure.travis-ci.org/imlucas/mott.png" /></a>
+</div>
 
 This is still a very early release as we"re still doing some housekeeping but have a
 look at the [example](https://github.com/imlucas/mott/tree/master/examples) for usage.
