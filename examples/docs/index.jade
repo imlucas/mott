@@ -46,6 +46,21 @@ html
                                 | # deploy to github pages
                                 | npm run-script deploy
 
+                        p to add to an existing project, create or add this to package.json
+                            pre
+                                code
+                                | "dependencies": {
+                                |     "mott": "0.1.x",
+                                |     "mott-starter": "0.0.x"
+                                | },
+                                | "mott": {
+                                |     "recipe": {
+                                |         "use": "mott-starter",
+                                |         "metadata": {}
+                                |     }
+                                | }
+
+
                 div.row-fluid
                     div.span12
                         h2 package.json
