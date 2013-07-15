@@ -3,11 +3,13 @@
 <div id="build-status">
     <a href="http://travis-ci.org/imlucas/mott"><img src="https://secure.travis-ci.org/imlucas/mott.png" /></a>
 </div>
+<p id="readme-intro">
+    This is still a very early release as we"re still doing some housekeeping but have a
+    look at the <a href="https://github.com/imlucas/mott/tree/master/examples">example</a> for usage.
+    In the mean time, more info is available on the <a href="http://phonegap.com/blog/2013/04/23/story-behind-exfm/">Phonegap Blog</a>
+</p>
 
-This is still a very early release as we"re still doing some housekeeping but have a
-look at the [example](https://github.com/imlucas/mott/tree/master/examples) for usage.
 
-In the mean time, more info is available on the [Phonegap Blog](http://phonegap.com/blog/2013/04/23/story-behind-exfm/)
 
 ## huh?  what is it good for?
 
