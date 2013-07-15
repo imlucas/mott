@@ -185,6 +185,60 @@ and upload it all to S3?  mott can do this for cordvoa.
 
 ### build for ipa
 
+## deploying
+
+mott drops all of the output created by your app in the `./build/` directory.
+this makes deploying your app after a build pretty simple
+
+### github
+
+add the deploy step with `deploy to github`
+
+    ...
+    "mott": {
+        "recipe": {
+            "use": "mott-starter",
+            "deploy": ["build", "deploy to github"]
+        }
+    }
+    ...
+
+### s3
+
+do incremental deploys to an S3 bucket with the `deploy to s3` step and the
+`deploy` metadata key.
+
+    ...
+    "mott": {
+        "recipe": {
+            "use": "mott-starter",
+            "deploy": ["build", "deploy to s3"],
+            "metadata": {
+                "deploy": "s3://accessKeyId:secret@bucket/optionalSubKey"
+            }
+        }
+    }
+    ...
+
+### opsworks stack
+
+create a new deployment with the `deploy opsworks stack` step and the
+`opsworks stack` metadata key.
+
+    ...
+    "mott": {
+        "recipe": {
+            "use": "mott-starter",
+            "deploy": ["build", "deploy opsworks stack"],
+            "metadata": {
+                "opsworks stack": "api-stack"
+            }
+        }
+    }
+    ...
+
+you can optionally provide `opsworks comment` and/or `opsworks data` that will
+also be sent to the create deployment call.
 
 ## about
 
