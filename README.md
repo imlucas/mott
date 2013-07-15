@@ -172,7 +172,10 @@ a step does not have to be defined in a recipe to be used by your app.  you can 
 ## cordova
 
 mott was built specifically for working with phonegap/cordova apps so it has
-pretty extensive integration out of the box.
+pretty extensive integration out of the box.  wouldn't it be nice if
+you could run one command, build your app, create a binary distribution and
+a manifest to install it, create a nice looking install page to send users to
+and upload it all to S3?  mott can do this for cordvoa.
 
  * simple add on to build step for copying to `www` in your native directory
  * generate PLIST and IPA files for adhoc distribution
