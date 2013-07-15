@@ -169,6 +169,20 @@ a step does not have to be defined in a recipe to be used by your app.  you can 
     }
     ...
 
+## cordova
+
+mott was built specifically for working with phonegap/cordova apps so it has
+pretty extensive integration out of the box.
+
+ * simple add on to build step for copying to `www` in your native directory
+ * generate PLIST and IPA files for adhoc distribution
+ * launch app in the emulator
+
+### ipa
+
+### build for ipa
+
+
 ## about
 
 mott was originally created to help build the exfm phonegap
