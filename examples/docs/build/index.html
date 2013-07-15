@@ -220,6 +220,64 @@ and upload it all to S3?  mott can do this for cordvoa.</p>
 
 <h3>build for ipa</h3>
 
+<h2>deploying</h2>
+
+<p>mott drops all of the output created by your app in the <code>./build/</code> directory.
+this makes deploying your app after a build pretty simple</p>
+
+<h3>github</h3>
+
+<p>add the deploy step with <code>deploy to github</code></p>
+
+<pre><code>...
+"mott": {
+    "recipe": {
+        "use": "mott-starter",
+        "deploy": ["build", "deploy to github"]
+    }
+}
+...
+</code></pre>
+
+<h3>s3</h3>
+
+<p>do incremental deploys to an S3 bucket with the <code>deploy to s3</code> step and the
+<code>deploy</code> metadata key.</p>
+
+<pre><code>...
+"mott": {
+    "recipe": {
+        "use": "mott-starter",
+        "deploy": ["build", "deploy to s3"],
+        "metadata": {
+            "deploy": "s3://accessKeyId:secret@bucket/optionalSubKey"
+        }
+    }
+}
+...
+</code></pre>
+
+<h3>opsworks stack</h3>
+
+<p>create a new deployment with the <code>deploy opsworks stack</code> step and the
+<code>opsworks stack</code> metadata key.</p>
+
+<pre><code>...
+"mott": {
+    "recipe": {
+        "use": "mott-starter",
+        "deploy": ["build", "deploy opsworks stack"],
+        "metadata": {
+            "opsworks stack": "api-stack"
+        }
+    }
+}
+...
+</code></pre>
+
+<p>you can optionally provide <code>opsworks comment</code> and/or <code>opsworks data</code> that will
+also be sent to the create deployment call.</p>
+
 <h2>about</h2>
 
 <p>mott was originally created to help build the exfm phonegap

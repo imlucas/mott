@@ -19,9 +19,9 @@
 * rebuild on change
 * build pages with jade
 * appcache
-* deploy an opsworks stack
-* deploy to S3
-* deploy to github pages
+* [deploy an opsworks stack](deploy-opsworks-stack)
+* [deploy to S3](#deploy-s3)
+* [deploy to github pages](#deploy-github-pages)
 
 ## getting started
 
@@ -190,6 +190,7 @@ and upload it all to S3?  mott can do this for cordvoa.
 mott drops all of the output created by your app in the `./build/` directory.
 this makes deploying your app after a build pretty simple
 
+<a name="deploy-github-pages"></a>
 ### github
 
 add the deploy step with `deploy to github`
@@ -203,6 +204,7 @@ add the deploy step with `deploy to github`
     }
     ...
 
+<a name="deploy-s3"></a>
 ### s3
 
 do incremental deploys to an S3 bucket with the `deploy to s3` step and the
@@ -220,6 +222,7 @@ do incremental deploys to an S3 bucket with the `deploy to s3` step and the
     }
     ...
 
+<a name="deploy-opsworks-stack"></a>
 ### opsworks stack
 
 create a new deployment with the `deploy opsworks stack` step and the
