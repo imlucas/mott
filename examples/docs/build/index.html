@@ -22,6 +22,7 @@
       <div id="content" class="span9">
         <div class="row-fluid">
           <div class="span12">
+            <h2>huh?  what is it good for?</h2>
             <h2>getting started</h2>
             <p>
               <pre><code></code># install mott from npm
@@ -42,6 +43,18 @@ git commit -m "Initial commit."
 &nbsp;
 # deploy to github pages
 npm run-script deploy</pre>
+            </p>
+            <p>to add to an existing project, create or add this to package.json
+              <pre><code></code>"dependencies": {
+    "mott": "0.1.x",
+    "mott-starter": "0.0.x"
+},
+"mott": {
+    "recipe": {
+        "use": "mott-starter",
+        "metadata": {}
+    }
+}</pre>
             </p>
           </div>
         </div>
@@ -204,10 +217,6 @@ deploy:
               added a few things already and removed them because they're
               just better in make or bash.
             </p>
-            <p>
-              similar to https://github.com/buildjs/bake-js https://github.com/buildjs/rigger http://brunch.io https://github.com/buildjs/recipe
-              so whats the difference between mott and all of those?
-            </p>
             <h2>the works</h2>
             <p>
               so, how does it all work?
@@ -303,70 +312,16 @@ deploy:
               writing steps much easier.  you can find more
               on that in the Context documentation.
             </p>
-            <h2>api</h2>
             <h2>compare</h2>
-            <table class="compare-builders">
-              <tr>
-                <th>&nbsp;</th>
-                <th>mott</th>
-                <th>brunch</th>
-                <th>grunt \ yeoman</th>
-              </tr>
-              <tr>
-                <td>build &amp; minify</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-              <tr>
-                <td>file watching</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-              <tr>
-                <td>live reload</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-              <tr>
-                <td>fast</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="nope">&#x2717;</td>
-              </tr>
-              <tr>
-                <td>simple</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="nope">&#x2717;</td>
-              </tr>
-              <tr>
-                <td>dev server</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-              <tr>
-                <td>boilerplates</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-              <tr>
-                <td>package manager support</td>
-                <td class="yep">&#x2713;</td>
-                <td class="nope">&#x2717;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-              <tr>
-                <td>plain js</td>
-                <td class="yep">&#x2713;</td>
-                <td class="nope">&#x2717;</td>
-                <td class="yep">&#x2713;</td>
-              </tr>
-            </table>
+            <h3>app assemblers</h3>
+            <ul>
+              <li><a href="http://brunch.io">brunch</a>&mdash; A lightweight approach to building HTML5 applications with an emphasis on elegance and simplicity</li>
+              <li><a href="https://github.com/buildjs/recipe">recipe.js</a>&mdash; Web Component Recipe Helpers</li>
+              <li><a href="http://assemble.io">assemble</a>&mdash; Grunt.js plugin. Assemble makes it dead simple to build modular sites, documentation and components from reusable templates and data</li>
+              <li><a href="http://mimosajs.com">mimosa</a>&mdash; A modern browser development toolkit</li>
+            </ul>
+            <h2>api</h2>
+            <p>@todo</p>
           </div>
         </div>
       </div>
