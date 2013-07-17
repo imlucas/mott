@@ -42,9 +42,9 @@
 <li>rebuild on change</li>
 <li>build pages with jade</li>
 <li>appcache</li>
-<li>deploy an opsworks stack</li>
-<li>deploy to S3</li>
-<li>deploy to github pages</li>
+<li><a href="deploy-opsworks-stack">deploy an opsworks stack</a></li>
+<li><a href="#deploy-s3">deploy to S3</a></li>
+<li><a href="#deploy-github-pages">deploy to github pages</a></li>
 </ul>
 
 <h2>getting started</h2>
@@ -225,6 +225,8 @@ and upload it all to S3?  mott can do this for cordvoa.</p>
 <p>mott drops all of the output created by your app in the <code>./build/</code> directory.
 this makes deploying your app after a build pretty simple</p>
 
+<p><a name="deploy-github-pages"></a></p>
+
 <h3>github</h3>
 
 <p>add the deploy step with <code>deploy to github</code></p>
@@ -238,6 +240,8 @@ this makes deploying your app after a build pretty simple</p>
 }
 ...
 </code></pre>
+
+<p><a name="deploy-s3"></a></p>
 
 <h3>s3</h3>
 
@@ -256,6 +260,12 @@ this makes deploying your app after a build pretty simple</p>
 }
 ...
 </code></pre>
+
+<p>this will take a files written in the current context, hash them and upload cannonical
+and versioned keys to S3 if the current hash is different from the cannonical
+key on S3 or its a new file.</p>
+
+<p><a name="deploy-opsworks-stack"></a></p>
 
 <h3>opsworks stack</h3>
 

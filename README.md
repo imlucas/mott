@@ -222,6 +222,10 @@ do incremental deploys to an S3 bucket with the `deploy to s3` step and the
     }
     ...
 
+this will take a files written in the current context, hash them and upload cannonical
+and versioned keys to S3 if the current hash is different from the cannonical
+key on S3 or its a new file.
+
 <a name="deploy-opsworks-stack"></a>
 ### opsworks stack
 
