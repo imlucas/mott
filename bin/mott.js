@@ -19,7 +19,7 @@ if(argv._[0] === 'new'){
         var parts = path.resolve('./').split(path.sep);
         name = parts[parts.length - 1];
     }
-    // @todo (lucas) If no name, use cwd name.
+
     recipe.task('new', function(ctx, done){
         ctx.projectName = name;
         ctx.packageJson = {
