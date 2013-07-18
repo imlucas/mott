@@ -45,5 +45,10 @@
   "bin": {
     "mott": "./bin/mott.js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "mott": {
+    "recipe": {
+      "lic": "add license"
+    }
+  }
 }
